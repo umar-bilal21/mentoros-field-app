@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MentorOS Field — Premium Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--blue:#0850FF;--blue-d:#0A3AD0;--blue-l:#EAF0FF;--ink:#0F172A;--mut:#6B7280;--line:#ECEEF4;
+--bg:#F5F7FB;--card:#fff;--green:#16A34A;--green-l:#E7F7EF;--amber:#D97706;--amber-l:#FDF3E5;--red:#DC2626;--red-l:#FDECEC;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',-apple-system,sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:#dde2 ea;background:linear-gradient(135deg,#e7ebf3,#d4dbe8);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 16px;color:var(--ink);}
+body.embed{padding:0;background:transparent;min-height:0;height:100vh;display:block;overflow:hidden;}
+body.embed .title,body.embed .hint{display:none;}
+body.embed .phone{width:100%;height:100%;padding:0;border-radius:0;background:transparent;box-shadow:none;}
+body.embed .screenwrap{height:100%;border-radius:0;}
+.title{font-size:18px;font-weight:800;color:#1e293b;margin-bottom:3px;}
+.hint{font-size:12px;color:#5b6678;margin-bottom:20px;}
+.phone{width:340px;height:720px;background:#0b1020;border-radius:42px;padding:11px;box-shadow:0 30px 70px rgba(15,23,42,.4);position:relative;}
+.screenwrap{width:100%;height:100%;border-radius:32px;overflow:hidden;background:var(--bg);position:relative;}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;}
+.screen.on{display:flex;}
+.sb{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:12px;font-weight:600;flex:none;}
+.scroll{flex:1;overflow-y:auto;}.scroll::-webkit-scrollbar{display:none;}
+/* gradient header */
+.gh{background:linear-gradient(155deg,#0850FF,#0A3AD0);color:#fff;padding:0 20px 22px;border-radius:0 0 26px 26px;flex:none;}
+.gh .sb{color:#fff;}
+.ghrow{display:flex;align-items:center;justify-content:space-between;}
+.av{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;}
+.h-greet{font-size:13px;opacity:.85;}.h-name{font-size:21px;font-weight:800;letter-spacing:-.02em;}
+.statpills{display:flex;gap:9px;margin-top:16px;}
+.spill{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.16);border-radius:13px;padding:9px 13px;flex:1;}
+.spill .n{font-size:17px;font-weight:800;}.spill .l{font-size:10.5px;opacity:.8;}
+/* body */
+.body{padding:18px;}
+.sect{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:4px 2px 11px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px;box-shadow:0 2px 8px rgba(16,23,42,.04);}
+.upnext{border:1.5px solid #D9E2FF;box-shadow:0 8px 22px rgba(8,80,255,.10);}
+.row{display:flex;align-items:center;gap:12px;}
+.pav{width:44px;height:44px;border-radius:13px;background:var(--blue-l);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex:none;}
+.pn{font-size:15.5px;font-weight:700;}.pm{font-size:12px;color:var(--mut);margin-top:1px;}
+.gpsbar{display:flex;align-items:center;gap:7px;font-size:11.5px;color:#0a7d44;background:var(--green-l);padding:8px 11px;border-radius:10px;margin:12px 0;}
+.btn{display:block;width:100%;border:none;text-align:center;padding:15px;border-radius:15px;font-size:14.5px;font-weight:700;cursor:pointer;}
+.btn-pri{background:linear-gradient(135deg,#0850FF,#0A3AD0);color:#fff;box-shadow:0 10px 22px rgba(8,80,255,.3);}
+.btn-soft{background:var(--blue-l);color:var(--blue);}
+.tl{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);}
+.tl:last-child{border:none;}.dot{width:9px;height:9px;border-radius:50%;background:#cbd5e1;flex:none;}
+.dot.live{background:var(--green);box-shadow:0 0 0 4px var(--green-l);}
+.time{margin-left:auto;font-size:12px;color:var(--mut);font-weight:600;}
+/* timer */
+.timer{margin-top:16px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;}
+.timer .t{font-size:25px;font-weight:800;font-variant-numeric:tabular-nums;}.timer .gl{font-size:11px;opacity:.82;}
+.gbadge{font-size:11px;background:rgba(91,228,155,.25);padding:5px 10px;border-radius:20px;}
+.live2{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;background:rgba(255,255,255,.16);padding:6px 12px;border-radius:30px;}
+.pulse{width:8px;height:8px;border-radius:50%;background:#5BE49B;animation:p 1.6s infinite;}
+@keyframes p{0%{box-shadow:0 0 0 0 rgba(91,228,155,.6)}70%{box-shadow:0 0 0 7px rgba(91,228,155,0)}100%{box-shadow:0 0 0 0 rgba(91,228,155,0)}}
+/* quick actions */
+.qgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;}
+.qa{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:14px 6px;text-align:center;cursor:pointer;box-shadow:0 2px 6px rgba(16,23,42,.04);}
+.qa:active{transform:scale(.96);}
+.qa .i{width:40px;height:40px;border-radius:13px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 7px;}
+.qa .l{font-size:11.5px;font-weight:600;color:#334155;}
+.qa .qcap{font-size:8.5px;color:#94a3b8;margin-top:3px;line-height:1.25;}
+.srcnote{font-size:10px;color:#8b95a7;font-style:italic;margin-top:6px;line-height:1.4;display:flex;gap:5px;align-items:flex-start;}
+.srcnote b{color:#5b6678;font-style:normal;font-weight:600;}
+/* AI */
+.ai{background:linear-gradient(135deg,#F3F6FF,#fff);border:1px solid #D9E2FF;border-radius:18px;padding:15px;box-shadow:0 6px 18px rgba(8,80,255,.08);margin-top:15px;}
+.aitop{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.aib{width:32px;height:32px;border-radius:11px;background:linear-gradient(135deg,#0850FF,#7A3FF0);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;}
+.aih{font-size:13.5px;font-weight:700;}.ais{font-size:11px;color:var(--mut);}
+.aitext{font-size:12.5px;color:#475569;line-height:1.55;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px;}
+.flag{margin-top:10px;display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;color:var(--amber);background:var(--amber-l);padding:9px 11px;border-radius:11px;}
+/* form */
+.fl{font-size:11.5px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.03em;margin:16px 2px 8px;}
+.inp{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;font-size:13px;color:#334155;box-shadow:0 2px 6px rgba(16,23,42,.03);}
+.pills{display:flex;gap:8px;}
+.pill{flex:1;text-align:center;font-size:12px;font-weight:600;padding:10px;border-radius:12px;border:1px solid var(--line);color:#64748b;background:#fff;cursor:pointer;}
+.pill.on{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 6px 14px rgba(8,80,255,.25);}
+.mic{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#0850FF,#0A3AD0);color:#fff;border-radius:17px;padding:15px;box-shadow:0 10px 24px rgba(8,80,255,.28);cursor:pointer;}
+.micic{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:19px;}
+/* check rows */
+.chk{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px;margin-bottom:9px;cursor:pointer;font-size:13px;}
+.box{width:21px;height:21px;border-radius:7px;border:2px solid #cbd5e1;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;}
+.chk.on .box{background:var(--blue);border-color:var(--blue);}
+/* sticky footer */
+.foot{padding:14px 18px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-top:1px solid var(--line);flex:none;}
+.saved{font-size:11.5px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:5px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 14px;flex:none;}
+.back{font-size:14px;color:var(--blue);font-weight:600;cursor:pointer;}
+.ttl{font-size:17px;font-weight:800;}
+/* bottom nav */
+.nav{display:flex;background:#fff;border-top:1px solid var(--line);padding:9px 6px 12px;flex:none;}
+.nav div{flex:1;text-align:center;font-size:10px;color:#9aa3b2;font-weight:600;cursor:pointer;}
+.nav div .i{font-size:19px;display:block;margin-bottom:3px;filter:grayscale(1) opacity(.6);}
+.nav div.on{color:var(--blue);}.nav div.on .i{filter:none;}
+/* search */
+.search{background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px 13px;font-size:13px;color:#94a3b8;display:flex;gap:8px;align-items:center;margin-bottom:14px;}
+.li{display:flex;align-items:center;gap:12px;padding:13px;background:#fff;border:1px solid var(--line);border-radius:15px;margin-bottom:10px;cursor:pointer;}
+.li:active{background:var(--blue-l);}
+.chev{margin-left:auto;color:#cbd5e1;}
+.risk{background:var(--red-l);border:1px solid #f7c5c5;border-radius:15px;padding:13px;margin-bottom:13px;}
+.risk .rt{font-size:12px;font-weight:700;color:var(--red);display:flex;align-items:center;gap:6px;}
+.kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.kv:last-child{border:none;}.kv .k{color:var(--mut);}.kv .v{font-weight:600;}
+.seg{display:flex;gap:7px;background:#eef1f6;padding:4px;border-radius:13px;margin-bottom:14px;}
+.seg div{flex:1;text-align:center;font-size:12px;font-weight:600;padding:8px;border-radius:10px;color:#64748b;cursor:pointer;}
+.seg div.on{background:#fff;color:var(--blue);box-shadow:0 1px 4px rgba(16,23,42,.08);}
+.stch{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.st-draft{background:var(--amber-l);color:var(--amber);}.st-done{background:var(--green-l);color:#0a7d44;}.st-open{background:var(--red-l);color:var(--red);}
+.toast{position:absolute;bottom:90px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;font-size:12px;padding:10px 16px;border-radius:30px;opacity:0;transition:.3s;pointer-events:none;z-index:9;}
+.toast.show{opacity:1;}
+.success{position:absolute;inset:0;background:linear-gradient(160deg,#0850FF,#0A3AD0);color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;z-index:20;}
+.success.on{display:flex;}
+.scheck{width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:20px;}
+.sigpad{background:#fff;border:1.5px dashed #cbd5e1;border-radius:15px;height:130px;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:13px;font-style:italic;}
+.progress{height:6px;background:#e4e8f0;border-radius:10px;overflow:hidden;}
+.progressfill{height:100%;background:linear-gradient(90deg,#0850FF,#0A3AD0);border-radius:10px;transition:width .3s;}
+.daygrid{display:flex;flex-direction:column;gap:9px;}
+.dayrow{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px;}
+.dayrow .d{font-size:13.5px;font-weight:600;}
+.tog{width:46px;height:26px;border-radius:20px;background:#cbd5e1;position:relative;cursor:pointer;flex:none;transition:.2s;}
+.tog.on{background:var(--green);}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;}
+.tog.on::after{left:23px;}
+.bigt{font-size:24px;font-weight:800;}
+.statline{display:flex;gap:10px;margin-bottom:14px;}
+.statbox{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;text-align:center;}
+.statbox .n{font-size:19px;font-weight:800;color:var(--blue);}.statbox .l{font-size:10.5px;color:var(--mut);margin-top:2px;}
+.review{background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 14px;margin-bottom:12px;}
+.srcbadge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;background:#EEF2FF;color:var(--blue);text-transform:none;letter-spacing:0;vertical-align:middle;margin-left:6px;}
+.srcbadge.ai{background:#F1ECFF;color:#7A3FF0;}
+.srcrow{display:flex;align-items:center;gap:8px;padding:11px;background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;font-size:12.5px;}
+.srcrow .em{font-size:15px;}.srcrow .ok{margin-left:auto;font-size:10.5px;color:var(--green);font-weight:700;white-space:nowrap;}
+.srcnote,.qcap,.srcbadge{display:none!important;}
+.chk .tm{margin-left:auto;font-size:11px;color:var(--mut);font-weight:600;}
+</style></head>
+<body>
+<div class="title">MentorOS Field — Premium Prototype</div>
+<div class="hint">Tap "Sign in" → "Clock in" → shift → report → signature. Bottom tabs are live too.</div>
+
+<div class="phone"><div class="screenwrap" id="wrap">
+
+  <!-- LOGIN -->
+  <div class="screen on" id="login" style="background:linear-gradient(160deg,#0850FF,#0A3AD0);">
+    <div class="sb" style="color:#fff"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:30px 26px;color:#fff">
+      <img src="assets/mentoros-logo.png" alt="MentorOS" style="height:34px;margin-bottom:10px">
+      <div style="font-size:14px;opacity:.85;margin-bottom:34px">Field app for support workers</div>
+      <div style="background:#fff;border-radius:20px;padding:20px;color:var(--ink);box-shadow:0 20px 40px rgba(8,80,255,.3)">
+        <div style="font-size:18px;font-weight:800;margin-bottom:16px">Welcome back 👋</div>
+        <div class="fl" style="margin-top:0">Email</div><div class="inp">alex.carter@example.com</div>
+        <div class="fl">Password</div><div class="inp">••••••••</div>
+        <button class="btn btn-pri" style="margin-top:16px" onclick="go('today')">Sign in</button>
+        <div style="text-align:center;margin-top:14px;font-size:12.5px;color:var(--mut)">or</div>
+        <button class="btn btn-soft" style="margin-top:12px" onclick="go('today')">👆 Sign in with Face ID</button>
+      </div>
+      <div style="text-align:center;margin-top:18px;font-size:12px;opacity:.8">Forgot password?</div>
+    </div>
+  </div>
+
+  <!-- TODAY -->
+  <div class="screen" id="today">
+    <div class="gh">
+      <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+      <img src="assets/mentoros-logo.png" alt="MentorOS" style="height:22px;margin-bottom:14px;opacity:.97">
+      <div class="ghrow"><div><div class="h-greet">Good morning,</div><div class="h-name">Alex 👋</div></div><div class="av">AC</div></div>
+      <div class="statpills">
+        <div class="spill"><div class="n">3</div><div class="l">shifts today</div></div>
+        <div class="spill"><div class="n">8h</div><div class="l">scheduled</div></div>
+        <div class="spill"><div class="n">2</div><div class="l">reports due</div></div>
+      </div>
+    </div>
+    <div class="scroll"><div class="body">
+      <div class="sect">Up next</div>
+      <div class="card upnext">
+        <div class="row"><div class="pav">ET</div><div><div class="pn">Emily Turner</div><div class="pm">Personal Care · 12 Maple Street</div></div></div>
+        <div class="pm" style="margin-top:10px">🕙 10:00 AM – 2:00 PM</div>
+        <div class="gpsbar">📍 You're near the site — ready to check in</div>
+        <button class="btn btn-pri" onclick="go('active')">▶  Clock in</button>
+      </div>
+      <div class="sect">Later today</div>
+      <div class="card">
+        <div class="tl"><span class="dot"></span><div><div class="pn" style="font-size:14px">Jacob Lee</div><div class="pm">8 River Road</div></div><span class="time">3:00 PM</span></div>
+        <div class="tl"><span class="dot"></span><div><div class="pn" style="font-size:14px">Sophie Adams</div><div class="pm">30 Oak Avenue</div></div><span class="time">6:30 PM</span></div>
+      </div>
+    </div></div>
+    <div class="nav" id="nav-today"></div>
+  </div>
+
+  <!-- ACTIVE SHIFT -->
+  <div class="screen" id="active">
+    <div class="gh">
+      <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+      <div class="ghrow"><div class="live2"><span class="pulse"></span> On shift</div><div class="gbadge">📍 GPS verified</div></div>
+      <div class="row" style="margin-top:14px"><div class="av">ET</div><div><div class="h-name" style="font-size:19px">Emily Turner</div><div class="h-greet">Personal Care · 12 Maple Street</div></div></div>
+      <div class="timer"><div><div class="gl">Clocked in 10:02</div><div class="t" id="clk">00:42:17</div></div><div class="gbadge">⏸ Pause</div></div>
+    </div>
+    <div class="scroll"><div class="body">
+      <div class="sect">Quick actions</div>
+      <div class="qgrid">
+        <div class="qa" onclick="go('note')"><div class="i">📝</div><div class="l">Note</div><div class="qcap">Quick note → saved to Shift Notes</div></div>
+        <div class="qa" onclick="go('photo')"><div class="i">📷</div><div class="l">Photo</div><div class="qcap">Attach proof photo (NDIS evidence)</div></div>
+        <div class="qa" onclick="incFrom='active';go('incident')"><div class="i">⚠️</div><div class="l">Incident</div><div class="qcap">Start 7-step incident report</div></div>
+        <div class="qa" onclick="go('meds')"><div class="i">💊</div><div class="l">Meds</div><div class="qcap">Tick meds given (from care plan)</div></div>
+        <div class="qa" onclick="go('expense')"><div class="i">💲</div><div class="l">Expense</div><div class="qcap">Log a shift expense</div></div>
+        <div class="qa" onclick="go('mileage')"><div class="i">🚗</div><div class="l">Mileage</div><div class="qcap">Log km travelled</div></div>
+      </div>
+      <div class="srcnote" style="margin-top:11px"><span>ℹ️</span><span>These let the worker capture things <b>during</b> the shift, so the report writes itself afterwards.</span></div>
+      <div class="ai" id="aiCard" onclick="toggleListen()" style="cursor:pointer">
+        <div class="aitop"><div class="aib" id="aiBadge">✨</div><div><div class="aih">AI shift assistant</div><div class="ais" id="aiS">Tap to talk — I'll write the report</div></div></div>
+        <div class="aitext" id="aiTxt">"Emily had breakfast at 10:30, took her morning medication, and we went for a short walk in the garden…"</div>
+      </div>
+    </div></div>
+    <div class="foot"><button class="btn btn-pri" onclick="go('report')">Clock out & finish report</button></div>
+  </div>
+
+  <!-- SHIFT REPORT -->
+  <div class="screen" id="report">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('active')">‹ Back</span><div class="ttl">Shift report</div><span class="saved">● Saved</span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="pm" style="margin-bottom:14px">Emily Turner · 12 Maple Street · 10:00–14:00</div>
+      <div class="mic" onclick="toast('Listening… ✨')"><div class="micic">🎤</div><div><div class="aih" style="color:#fff">Hold to dictate</div><div style="font-size:11.5px;opacity:.85">AI writes a full draft for you</div></div></div>
+      <div class="ai">
+        <div class="aitop"><div class="aib">✨</div><div><div class="aih">AI draft ready</div><div class="ais">Review & edit — 8 sec</div></div></div>
+        <div class="aitext">Emily was in good spirits today. She had breakfast at 10:30 and took her morning medication as scheduled. We spent time in the garden and completed her mobility exercises.</div>
+        <div class="srcnote"><span>ℹ️</span><span>This summary is <b>generated from your voice dictation</b> — edit anything.</span></div>
+        <div class="flag">⚠️ Possible incident detected — tap to confirm</div>
+        <div class="srcnote"><span>ℹ️</span><span>AI <b>scans your text for incident keywords</b> (e.g. "fell", "upset") so nothing reportable is missed.</span></div>
+      </div>
+      <div class="fl">Supports provided</div>
+      <div class="chk on" onclick="this.classList.toggle('on')"><div class="box">✓</div>Personal care</div>
+      <div class="chk on" onclick="this.classList.toggle('on')"><div class="box">✓</div>Meal prep</div>
+      <div class="chk" onclick="this.classList.toggle('on')"><div class="box">✓</div>Community access</div>
+      <div class="fl">Goal progress</div>
+      <div class="pills"><div class="pill" onclick="pick(this)">None</div><div class="pill on" onclick="pick(this)">Some</div><div class="pill" onclick="pick(this)">Good</div></div>
+      <div class="fl">Meals & medication</div>
+      <div class="chk on" onclick="this.classList.toggle('on')"><div class="box">✓</div>Levetiracetam 500mg<span class="tm">given 9:30</span></div>
+      <div class="chk on" onclick="this.classList.toggle('on')"><div class="box">✓</div>Breakfast<span class="tm">9:30</span></div>
+      <div class="fl">Handover for next shift</div>
+      <div class="inp" style="color:#94a3b8">Add a note for the next worker…</div>
+    </div></div>
+    <div class="foot"><button class="btn btn-pri" onclick="go('signature')">Continue → signature</button></div>
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="screen" id="signature">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('report')">‹ Back</span><div class="ttl">Confirm service</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="card"><div class="fl" style="margin-top:0">Service summary</div>
+        <div class="kv"><span class="k">Participant</span><span class="v">Emily Turner</span></div>
+        <div class="kv"><span class="k">Date</span><span class="v">24 Jun 2026</span></div>
+        <div class="kv"><span class="k">Duration</span><span class="v">4 hrs (10:00–14:00)</span></div>
+        <div class="kv"><span class="k">Location</span><span class="v">12 Maple Street</span></div>
+      </div>
+      <div class="fl">Participant / guardian signature</div>
+      <div class="sigpad">✍ Sign here</div>
+      <div class="chk on" style="margin-top:13px" onclick="this.classList.toggle('on')"><div class="box">✓</div>Service delivered as planned</div>
+    </div></div>
+    <div class="foot"><button class="btn btn-pri" onclick="done()">Submit report</button></div>
+    <div class="success" id="succ"><div class="scheck">✓</div><div style="font-size:20px;font-weight:800">Report submitted</div><div style="opacity:.85;margin-top:8px;font-size:13px">Synced ✓ · Emily's profile updated</div><button class="btn btn-soft" style="margin-top:26px;width:auto;padding:13px 28px" onclick="go('today')">Back to Today</button></div>
+  </div>
+
+  <!-- PEOPLE -->
+  <div class="screen" id="people">
+    <div class="gh" style="padding-bottom:18px"><div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div><div class="h-name">Participants</div><div class="h-greet">8 people you support</div></div>
+    <div class="scroll"><div class="body">
+      <div class="search">🔍 Search participants…</div>
+      <div class="li" onclick="go('profile')"><div class="pav">ET</div><div><div class="pn" style="font-size:14px">Emily Turner</div><div class="pm">NDIS •••• 0001 · 12 Maple Street</div></div><span class="chev">›</span></div>
+      <div class="li" onclick="go('profile')"><div class="pav">JL</div><div><div class="pn" style="font-size:14px">Jacob Lee</div><div class="pm">NDIS •••• 0002 · 8 River Road</div></div><span class="chev">›</span></div>
+      <div class="li" onclick="go('profile')"><div class="pav">SA</div><div><div class="pn" style="font-size:14px">Sophie Adams</div><div class="pm">NDIS •••• 0003 · 30 Oak Avenue</div></div><span class="chev">›</span></div>
+      <div class="li" onclick="go('profile')"><div class="pav">DC</div><div><div class="pn" style="font-size:14px">Daniel Cruz</div><div class="pm">NDIS •••• 0004 · 5 Pine Close</div></div><span class="chev">›</span></div>
+    </div></div>
+    <div class="nav" id="nav-people"></div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="screen" id="profile">
+    <div class="gh">
+      <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+      <div class="topbar" style="padding:0 0 12px;color:#fff"><span class="back" style="color:#fff" onclick="go('people')">‹ Back</span><span class="back" style="color:#fff">Call ☎</span></div>
+      <div class="row"><div class="av" style="width:54px;height:54px;font-size:19px">ET</div><div><div class="h-name" style="font-size:20px">Emily Turner</div><div class="h-greet">NDIS •••• 0001 · Active</div></div></div>
+    </div>
+    <div class="scroll"><div class="body">
+      <div class="risk"><div class="rt">⚠️ Risk flags</div><div style="font-size:12.5px;color:#7f1d1d;margin-top:6px">Falls risk · Epilepsy — see Safety Plan · Nut allergy</div></div>
+      <div class="seg"><div class="on" onclick="profTab(this,'p-overview')">Overview</div><div onclick="profTab(this,'p-health')">Health</div><div onclick="profTab(this,'p-safety')">Safety</div><div onclick="profTab(this,'p-goals')">Goals</div></div>
+
+      <div class="proftab" id="p-overview">
+        <div class="card"><div class="fl" style="margin-top:0">Quick info</div>
+          <div class="kv"><span class="k">Date of birth</span><span class="v">13/07/1991</span></div>
+          <div class="kv"><span class="k">Living</span><span class="v">SIL — 12 Maple Street</span></div>
+          <div class="kv"><span class="k">Key contact</span><span class="v">☎ Guardian</span></div>
+        </div>
+        <div class="card" style="margin-bottom:0"><div class="fl" style="margin-top:0">Active NDIS plan</div>
+          <div class="kv"><span class="k">Funding</span><span class="v">$435,243</span></div>
+          <div class="kv"><span class="k">Expires</span><span class="v">01/12/2026</span></div>
+        </div>
+      </div>
+
+      <div class="proftab" id="p-health" style="display:none">
+        <div class="card"><div class="fl" style="margin-top:0">💊 Medications</div>
+          <div class="kv"><span class="k">Morning</span><span class="v">Levetiracetam 500mg</span></div>
+          <div class="kv"><span class="k">Evening</span><span class="v">Levetiracetam 500mg</span></div>
+        </div>
+        <div class="card"><div class="fl" style="margin-top:0">🥜 Allergies</div>
+          <div class="kv"><span class="k">Nuts</span><span class="v" style="color:var(--red)">Severe</span></div>
+          <div class="kv"><span class="k">Penicillin</span><span class="v">Moderate</span></div>
+        </div>
+        <div class="card"><div class="fl" style="margin-top:0">🍽️ Dietary</div>
+          <div class="kv"><span class="k">Texture</span><span class="v">Soft / minced</span></div>
+          <div class="kv"><span class="k">Assistance</span><span class="v">Supervision needed</span></div>
+        </div>
+        <div class="card" style="margin-bottom:0"><div class="fl" style="margin-top:0">🏥 Emergency & hospital</div>
+          <div class="kv"><span class="k">Preferred hospital</span><span class="v">Riverside</span></div>
+          <div class="kv"><span class="k">Conditions</span><span class="v">Epilepsy</span></div>
+        </div>
+      </div>
+
+      <div class="proftab" id="p-safety" style="display:none">
+        <div class="card" style="background:var(--red-l);border-color:#f7c5c5"><div class="fl" style="margin-top:0;color:var(--red)">🛡️ Safety Plan</div>
+          <div style="font-size:12.5px;color:#7f1d1d;line-height:1.5">Falls risk — ensure clear walkways. Epilepsy — if seizure &gt;5 min, call 000. Keep nut-free environment.</div>
+        </div>
+        <div class="card" style="margin-bottom:0"><div class="fl" style="margin-top:0">🌿 Wellbeing plan</div>
+          <div class="kv"><span class="k">Helpful support</span><span class="v">Calm voice, routine</span></div>
+          <div class="kv"><span class="k">Triggers</span><span class="v">Loud noise, crowds</span></div>
+          <div class="kv"><span class="k">Self-care</span><span class="v">Music, garden walks</span></div>
+        </div>
+      </div>
+
+      <div class="proftab" id="p-goals" style="display:none">
+        <div class="card"><div class="fl" style="margin-top:0">🎯 Goal 1 — Independence</div>
+          <div style="font-size:12.5px;color:#475569;line-height:1.5">Prepare a simple breakfast with minimal support.</div>
+          <div class="pm" style="margin-top:7px;color:var(--green)">● On track</div>
+        </div>
+        <div class="card" style="margin-bottom:0"><div class="fl" style="margin-top:0">🎯 Goal 2 — Community</div>
+          <div style="font-size:12.5px;color:#475569;line-height:1.5">Attend weekly social group at the community centre.</div>
+          <div class="pm" style="margin-top:7px;color:var(--amber)">● Needs encouragement</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="nav" id="nav-profile"></div>
+  </div>
+
+  <!-- REPORTS -->
+  <div class="screen" id="reports">
+    <div class="gh" style="padding-bottom:18px"><div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div><div class="h-name">Reports</div><div class="h-greet">Your shift reports & incidents</div></div>
+    <div class="scroll"><div class="body">
+      <div class="seg"><div class="on" onclick="repTab(this,'r-shifts')">Shift reports</div><div onclick="repTab(this,'r-incidents')">Incidents</div></div>
+      <div class="reptab" id="r-shifts">
+        <div class="li" onclick="go('report')"><div class="pav" style="background:var(--amber-l);color:var(--amber)">ET</div><div><div class="pn" style="font-size:14px">Emily Turner</div><div class="pm">Today · 10:00–14:00</div></div><span class="stch st-draft" style="margin-left:auto">Draft</span></div>
+        <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">JL</div><div><div class="pn" style="font-size:14px">Jacob Lee</div><div class="pm">Yesterday · 9:00–13:00</div></div><span class="stch st-done" style="margin-left:auto">Submitted</span></div>
+        <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">SA</div><div><div class="pn" style="font-size:14px">Sophie Adams</div><div class="pm">22 Jun · 14:00–18:00</div></div><span class="stch st-done" style="margin-left:auto">Submitted</span></div>
+      </div>
+      <div class="reptab" id="r-incidents" style="display:none">
+        <div class="li"><div class="pav" style="background:var(--red-l);color:var(--red)">⚠️</div><div><div class="pn" style="font-size:14px">Minor fall — Emily Turner</div><div class="pm">22 Jun · Medium · under review</div></div><span class="stch st-open" style="margin-left:auto">Open</span></div>
+        <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">✓</div><div><div class="pn" style="font-size:14px">Behaviour — Daniel Cruz</div><div class="pm">15 Jun · resolved</div></div><span class="stch st-done" style="margin-left:auto">Closed</span></div>
+      </div>
+      <button class="btn btn-soft" style="margin-top:6px" onclick="incFrom='reports';go('incident')">+ Report an incident</button>
+    </div></div>
+    <div class="nav" id="nav-reports"></div>
+  </div>
+
+  <!-- INCIDENT (7-step wizard) -->
+  <div class="screen" id="incident">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="incBack()">‹ Back</span><div class="ttl">Report incident</div><span class="pm" id="incStepNo">1/7</span></div>
+    <div style="padding:0 18px 12px"><div class="progress"><div class="progressfill" id="incBar" style="width:14%"></div></div><div class="pm" id="incPhase" style="margin-top:6px;font-size:11px">Incident Details</div></div>
+    <div class="scroll"><div class="body" style="padding-top:2px" id="incBody"></div></div>
+    <div class="foot" style="display:flex;gap:10px"><button class="btn btn-soft" style="flex:0 0 38%" onclick="incBack()">← Back</button><button class="btn btn-pri" style="flex:1" id="incNextBtn" onclick="incNext()">Next step →</button></div>
+    <div class="success" id="incSucc"><div class="scheck">✓</div><div style="font-size:20px;font-weight:800">Incident recorded</div><div style="opacity:.85;margin-top:8px;font-size:13px">Saved offline · Manager notified · NDIS-ready</div><button class="btn btn-soft" style="margin-top:26px;width:auto;padding:13px 28px" onclick="go('reports')">Done</button></div>
+  </div>
+
+  <!-- MORE -->
+  <div class="screen" id="more">
+    <div class="gh" style="padding-bottom:18px"><div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div><div class="row"><div class="av">AC</div><div><div class="h-name" style="font-size:18px">Alex Carter</div><div class="h-greet">Support Worker</div></div></div></div>
+    <div class="scroll"><div class="body">
+      <div class="li" onclick="go('availability')">🗓️ <div style="font-size:13.5px;font-weight:600">My availability</div><span class="chev">›</span></div>
+      <div class="li" onclick="go('timesheets')">⏱️ <div style="font-size:13.5px;font-weight:600">Timesheets</div><span class="chev">›</span></div>
+      <div class="li" onclick="go('expenses')">💲 <div style="font-size:13.5px;font-weight:600">Expenses & mileage</div><span class="chev">›</span></div>
+      <div class="li" onclick="go('messages')">💬 <div style="font-size:13.5px;font-weight:600">Messages / handover</div><span class="chev">›</span></div>
+      <div class="li" onclick="go('certs')">🎓 <div style="font-size:13.5px;font-weight:600">My certifications</div><span class="chev">›</span></div>
+      <div class="li" onclick="go('settings')">⚙️ <div style="font-size:13.5px;font-weight:600">Settings</div><span class="chev">›</span></div>
+      <div class="card" style="margin-top:6px;display:flex;align-items:center;gap:10px"><span class="dot live"></span><div style="font-size:12.5px;color:var(--mut)">All shifts synced · 2 min ago</div></div>
+    </div></div>
+    <div class="nav" id="nav-more"></div>
+  </div>
+
+  <!-- AVAILABILITY -->
+  <div class="screen" id="availability">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('more')">‹ Back</span><div class="ttl">My availability</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="srcnote" style="margin-bottom:14px"><span>ℹ️</span><span>Set when you can work. Managers use this to build the <b>roster</b>.</span></div>
+      <div class="daygrid">
+        <div class="dayrow"><div><div class="d">Monday</div><div class="pm">9:00 AM – 5:00 PM</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="dayrow"><div><div class="d">Tuesday</div><div class="pm">9:00 AM – 5:00 PM</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="dayrow"><div><div class="d">Wednesday</div><div class="pm">Not available</div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+        <div class="dayrow"><div><div class="d">Thursday</div><div class="pm">10:00 AM – 6:00 PM</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="dayrow"><div><div class="d">Friday</div><div class="pm">9:00 AM – 3:00 PM</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="dayrow"><div><div class="d">Saturday</div><div class="pm">Not available</div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+        <div class="dayrow"><div><div class="d">Sunday</div><div class="pm">Not available</div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div></div>
+    <div class="foot"><button class="btn btn-pri" onclick="toast('Availability saved ✓');setTimeout(()=>go('more'),700)">Save availability</button></div>
+  </div>
+
+  <!-- TIMESHEETS -->
+  <div class="screen" id="timesheets">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('more')">‹ Back</span><div class="ttl">Timesheets</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="statline"><div class="statbox"><div class="n">32h</div><div class="l">this week</div></div><div class="statbox"><div class="n">2</div><div class="l">approved</div></div><div class="statbox"><div class="n">1</div><div class="l">pending</div></div></div>
+      <div class="srcnote" style="margin-bottom:12px"><span>ℹ️</span><span>From your clocked shifts (<b>Rostering</b>) → feeds <b>payroll</b>.</span></div>
+      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">ET</div><div><div class="pn" style="font-size:14px">Emily Turner · 4h</div><div class="pm">Today · 10:00–14:00</div></div><span class="stch st-draft" style="margin-left:auto">Pending</span></div>
+      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">JL</div><div><div class="pn" style="font-size:14px">Jacob Lee · 4h</div><div class="pm">Yesterday · 9:00–13:00</div></div><span class="stch st-done" style="margin-left:auto">Approved</span></div>
+      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">SA</div><div><div class="pn" style="font-size:14px">Sophie Adams · 4h</div><div class="pm">22 Jun · 14:00–18:00</div></div><span class="stch st-done" style="margin-left:auto">Approved</span></div>
+    </div></div>
+    <div class="nav" id="nav-ts"></div>
+  </div>
+
+  <!-- EXPENSES -->
+  <div class="screen" id="expenses">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('more')">‹ Back</span><div class="ttl">Expenses & mileage</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="statline"><div class="statbox"><div class="n">$24.50</div><div class="l">expenses</div></div><div class="statbox"><div class="n">18 km</div><div class="l">mileage</div></div></div>
+      <div class="li"><div class="pav">🧾</div><div><div class="pn" style="font-size:14px">Groceries for Emily</div><div class="pm">Today · receipt attached</div></div><span class="v" style="margin-left:auto;font-weight:700">$24.50</span></div>
+      <div class="li"><div class="pav">🚗</div><div><div class="pn" style="font-size:14px">Drive to appointment</div><div class="pm">Today · 18 km</div></div><span class="v" style="margin-left:auto;font-weight:700">18 km</span></div>
+      <button class="btn btn-soft" onclick="toast('Add expense / mileage')">+ Add expense or mileage</button>
+    </div></div>
+    <div class="nav" id="nav-ex"></div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="screen" id="messages">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('more')">‹ Back</span><div class="ttl">Messages</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="seg"><div class="on">Handover</div><div>Team chat</div></div>
+      <div class="srcnote" style="margin-bottom:12px"><span>ℹ️</span><span>From the site's <b>Message Board &amp; Live Chat</b> (12 Maple Street).</span></div>
+      <div class="card"><div class="row"><div class="pav" style="font-size:13px">MR</div><div><div class="pn" style="font-size:13.5px">Maria (Team Leader)</div><div class="pm">2h ago</div></div></div><div style="font-size:13px;margin-top:9px;color:#334155">Emily's GP appointment moved to Thursday 2pm — please note for next shift.</div></div>
+      <div class="card"><div class="row"><div class="pav" style="font-size:13px">SM</div><div><div class="pn" style="font-size:13.5px">Sam (Night shift)</div><div class="pm">Yesterday</div></div></div><div style="font-size:13px;margin-top:9px;color:#334155">All calm overnight. Morning meds ready in the cabinet.</div></div>
+    </div></div>
+    <div class="foot"><div class="search" style="margin:0">💬 Write a handover note…</div></div>
+  </div>
+
+  <!-- CERTIFICATIONS -->
+  <div class="screen" id="certs">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('more')">‹ Back</span><div class="ttl">My certifications</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="srcnote" style="margin-bottom:12px"><span>ℹ️</span><span>From <b>People &amp; Culture → Compliance</b>. Alerts before expiry.</span></div>
+      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">✓</div><div><div class="pn" style="font-size:14px">First Aid & CPR</div><div class="pm">Expires 12 Mar 2027</div></div><span class="stch st-done" style="margin-left:auto">Current</span></div>
+      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">✓</div><div><div class="pn" style="font-size:14px">NDIS Worker Screening</div><div class="pm">Expires 01 Sep 2027</div></div><span class="stch st-done" style="margin-left:auto">Current</span></div>
+      <div class="li"><div class="pav" style="background:var(--amber-l);color:var(--amber)">!</div><div><div class="pn" style="font-size:14px">Manual Handling</div><div class="pm">Expires 18 Jul 2026 — soon</div></div><span class="stch st-draft" style="margin-left:auto">Renew</span></div>
+    </div></div>
+    <div class="nav" id="nav-cert"></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="screen" id="settings">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('more')">‹ Back</span><div class="ttl">Settings</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="dayrow"><div class="d">🌙 Dark mode</div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+      <div class="dayrow" style="margin-top:9px"><div class="d">🔒 Biometric login</div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="dayrow" style="margin-top:9px"><div class="d">🔔 Push notifications</div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="dayrow" style="margin-top:9px"><div class="d">📴 Offline sync (Wi-Fi only)</div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+      <div class="card" style="margin-top:13px;display:flex;align-items:center;gap:10px"><span class="dot live"></span><div style="font-size:12.5px;color:var(--mut)">All data synced · 2 min ago</div></div>
+      <button class="btn btn-soft" style="margin-top:13px;color:var(--red);background:var(--red-l)" onclick="toast('Signed out')">Sign out</button>
+    </div></div>
+  </div>
+
+  <!-- MEDS -->
+  <div class="screen" id="meds">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('active')">‹ Back</span><div class="ttl">Medication</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="pm" style="margin-bottom:12px">Emily Turner · today's schedule</div>
+      <div class="srcnote" style="margin-bottom:14px"><span>ℹ️</span><span>This list comes from Emily's <b>medication schedule</b> (Health & Medical). Tap "Given" — the time logs automatically.</span></div>
+      <div class="srcrow"><span class="em">💊</span><div><div style="font-weight:600">Levetiracetam 500mg</div><div class="pm">Morning · due 9:30</div></div><span class="ok">✓ given 9:30</span></div>
+      <div class="srcrow"><span class="em">💊</span><div style="flex:1"><div style="font-weight:600">Paracetamol 500mg</div><div class="pm">PRN · as needed</div></div><div class="pill" style="flex:0 0 auto;padding:7px 14px" onclick="toast('Marked given ✓')">Mark given</div></div>
+      <div class="srcrow"><span class="em">💊</span><div style="flex:1"><div style="font-weight:600">Levetiracetam 500mg</div><div class="pm">Evening · due 18:00</div></div><div class="pm">upcoming</div></div>
+    </div></div>
+    <div class="foot"><button class="btn btn-pri" onclick="toast('Medication saved ✓');setTimeout(()=>go('active'),700)">Save</button></div>
+  </div>
+
+  <!-- EXPENSE -->
+  <div class="screen" id="expense">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('active')">‹ Back</span><div class="ttl">Add expense</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="fl" style="margin-top:4px">Amount</div><div class="inp" style="font-size:18px;font-weight:700">$ 24.50</div>
+      <div class="fl">Category</div>
+      <div class="pills" style="flex-wrap:wrap;gap:8px"><div class="pill on" onclick="pick(this)">Groceries</div><div class="pill" onclick="pick(this)">Activity</div><div class="pill" onclick="pick(this)">Other</div></div>
+      <div class="fl">Receipt</div>
+      <div style="display:flex;gap:9px"><div style="width:64px;height:64px;border-radius:12px;background:var(--blue-l);display:flex;align-items:center;justify-content:center;font-size:22px">🧾</div><div style="width:64px;height:64px;border-radius:12px;border:1.5px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;color:#94a3b8" onclick="toast('Camera…')">+ 📷</div></div>
+      <div class="fl">Note</div><div class="inp" style="color:#94a3b8">e.g. groceries for Emily</div>
+      <div class="srcnote"><span>ℹ️</span><span>Linked to this shift → goes to <b>Finance</b> for reimbursement.</span></div>
+    </div></div>
+    <div class="foot"><button class="btn btn-pri" onclick="toast('Expense saved ✓');setTimeout(()=>go('active'),700)">Save expense</button></div>
+  </div>
+
+  <!-- MILEAGE -->
+  <div class="screen" id="mileage">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('active')">‹ Back</span><div class="ttl">Log mileage</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="card" style="text-align:center;padding:20px"><div class="bigt" style="color:var(--blue)">18.0 km</div><div class="pm">tracked via GPS</div></div>
+      <div class="fl">From</div><div class="inp">12 Maple Street, Riverside</div>
+      <div class="fl">To</div><div class="inp">Riverside Medical Centre</div>
+      <div class="fl">Purpose</div>
+      <div class="pills" style="flex-wrap:wrap;gap:8px"><div class="pill on" onclick="pick(this)">Appointment</div><div class="pill" onclick="pick(this)">Activity</div><div class="pill" onclick="pick(this)">Other</div></div>
+      <div class="srcnote"><span>ℹ️</span><span>Distance auto-tracked by <b>GPS</b> during the shift → reimbursed via payroll.</span></div>
+    </div></div>
+    <div class="foot"><button class="btn btn-pri" onclick="toast('Mileage saved ✓');setTimeout(()=>go('active'),700)">Save mileage</button></div>
+  </div>
+
+  <!-- NOTE CAPTURE -->
+  <div class="screen" id="note">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('active')">‹ Back</span><div class="ttl">Add note</div><span class="saved">● Saved</span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div class="pm" style="margin-bottom:14px">Emily Turner · on shift · 11:24 AM</div>
+      <div class="mic" onclick="toast('Listening… ✨')"><div class="micic">🎤</div><div><div class="aih" style="color:#fff">Hold to dictate</div><div style="font-size:11.5px;opacity:.85">Speak your note — AI cleans it up</div></div></div>
+      <div class="fl">Note</div>
+      <div class="inp" style="min-height:120px;color:#94a3b8">Type or dictate a quick note…</div>
+      <div class="srcnote"><span>ℹ️</span><span>Saved to Emily's <b>Shift Notes</b> &amp; pulled into the shift report later.</span></div>
+    </div></div>
+    <div class="foot"><button class="btn btn-pri" onclick="toast('Note saved ✓');setTimeout(()=>go('active'),700)">Save note</button></div>
+  </div>
+
+  <!-- PHOTO CAPTURE -->
+  <div class="screen" id="photo">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮ 🔋</span></div>
+    <div class="topbar"><span class="back" onclick="go('active')">‹ Back</span><div class="ttl">Add photo</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body" style="padding-top:0">
+      <div style="background:#0b1020;border-radius:16px;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;position:relative">
+        <div style="font-size:42px">📷</div><div style="font-size:12px;opacity:.7;margin-top:8px">Camera preview</div>
+        <div style="position:absolute;bottom:16px;width:62px;height:62px;border-radius:50%;background:#fff;border:4px solid rgba(255,255,255,.4);cursor:pointer" onclick="toast('Photo captured 📸')"></div>
+      </div>
+      <div class="fl">Attached</div>
+      <div style="display:flex;gap:9px"><div style="width:60px;height:60px;border-radius:11px;background:var(--blue-l);display:flex;align-items:center;justify-content:center">🖼️</div><div style="width:60px;height:60px;border-radius:11px;border:1.5px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;color:#94a3b8">+</div></div>
+      <div class="fl">Caption (optional)</div>
+      <div class="inp" style="color:#94a3b8">e.g. completed meal, environment, equipment…</div>
+      <div class="srcnote"><span>ℹ️</span><span>Stored as <b>NDIS evidence</b> on the shift &amp; participant record.</span></div>
+    </div></div>
+    <div class="foot"><button class="btn btn-pri" onclick="toast('Photo saved ✓');setTimeout(()=>go('active'),700)">Attach photo</button></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div></div>
+
+<script>
+const tabs=[['today','🏠','Today'],['people','👥','People'],['reports','📋','Reports'],['more','⋯','More']];
+function navHTML(active){return tabs.map(t=>`<div class="${t[0]===active?'on':''}" onclick="go('${t[0]}')"><span class="i">${t[1]}</span>${t[2]}</div>`).join('');}
+document.getElementById('nav-today').innerHTML=navHTML('today');
+document.getElementById('nav-people').innerHTML=navHTML('people');
+document.getElementById('nav-profile').innerHTML=navHTML('people');
+document.getElementById('nav-reports').innerHTML=navHTML('reports');
+document.getElementById('nav-more').innerHTML=navHTML('more');
+['nav-ts','nav-ex','nav-cert'].forEach(n=>{const e=document.getElementById(n);if(e)e.innerHTML=navHTML('more');});
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');document.getElementById('succ')?.classList.remove('on');document.getElementById('incSucc')?.classList.remove('on');if(id==='incident')incReset();document.querySelector('#'+id+' .scroll')?.scrollTo(0,0);try{if(window.self!==window.top)parent.postMessage({mentorScreen:id},'*');}catch(e){}}
+function pick(el){[...el.parentElement.children].forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+function done(){document.getElementById('succ').classList.add('on');}
+function profTab(el,id){[...el.parentElement.children].forEach(c=>c.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.proftab').forEach(t=>t.style.display='none');document.getElementById(id).style.display='block';}
+function repTab(el,id){[...el.parentElement.children].forEach(c=>c.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.reptab').forEach(t=>t.style.display='none');document.getElementById(id).style.display='block';}
+
+/* ---- Incident 7-step wizard ---- */
+const incSteps=[
+ {phase:'Immediate Response',html:`
+   <div class="card" style="background:var(--red-l);border-color:#f7c5c5"><div class="rt" style="color:var(--red);font-weight:700;font-size:12px">⚠️ The Three A's — Immediate response</div><div style="font-size:11.5px;color:#7f1d1d;margin-top:6px">Assess · Assist · Alert</div></div>
+   <div class="chk" onclick="this.classList.toggle('on')"><div class="box">✓</div>I assessed the situation</div>
+   <div class="chk on" onclick="this.classList.toggle('on')"><div class="box">✓</div>I assisted those in danger (if safe)</div>
+   <div class="chk" onclick="this.classList.toggle('on')"><div class="box">✓</div>I alerted emergency services (if needed)</div>
+   <div class="chk" onclick="this.classList.toggle('on')"><div class="box">✓</div>Scene made safe</div>
+   <div class="chk" onclick="this.classList.toggle('on')"><div class="box">✓</div>Manager notified</div>
+   <div class="fl">Severity</div>
+   <div class="pills"><div class="pill" onclick="pick(this)">Low</div><div class="pill on" onclick="pick(this)">Medium</div><div class="pill" onclick="pick(this)">High</div></div>`},
+ {phase:'Incident Details',html:`
+   <div class="fl" style="margin-top:4px">Participant</div><div class="inp">Emily Turner ▾</div>
+   <div class="fl">Location / site</div><div class="inp">12 Maple Street ▾</div>
+   <div class="row" style="gap:10px"><div style="flex:1"><div class="fl">Date</div><div class="inp">24 Jun 2026</div></div><div style="flex:1"><div class="fl">Time</div><div class="inp">11:15 AM</div></div></div>
+   <div class="fl">Location description</div><div class="inp" style="color:#94a3b8">e.g. kitchen, backyard, bedroom…</div>
+   <div class="fl">Witness (optional)</div><div class="inp" style="color:#94a3b8">Full name · phone · email</div>`},
+ {phase:'Incident Details',html:`
+   <div class="card"><div class="fl" style="margin-top:0">📄 Before the incident</div><div class="pm">What was happening leading up to it?</div></div>
+   <div class="inp" style="min-height:110px;color:#94a3b8">Describe the participant's mood, activities, environment, and any triggers or warning signs…</div>
+   <div class="mic" style="margin-top:13px" onclick="toast('Listening… ✨')"><div class="micic">🎤</div><div><div class="aih" style="color:#fff">Dictate</div><div style="font-size:11.5px;opacity:.85">AI writes it for you</div></div></div>`},
+ {phase:'Incident Details',html:`
+   <div class="fl" style="margin-top:4px">Type of incident</div>
+   <div class="pills" style="flex-wrap:wrap;gap:8px"><div class="pill on" onclick="pick(this)">Injury</div><div class="pill" onclick="pick(this)">Behaviour</div><div class="pill" onclick="pick(this)">Medical</div></div>
+   <div class="fl">What happened</div>
+   <div class="inp" style="min-height:100px;color:#94a3b8">Describe exactly what happened…</div>
+   <div class="mic" style="margin-top:13px" onclick="toast('Listening… ✨')"><div class="micic">🎤</div><div><div class="aih" style="color:#fff">Dictate what happened</div><div style="font-size:11.5px;opacity:.85">AI structures the report</div></div></div>`},
+ {phase:'Incident Details',html:`
+   <div class="card"><div class="fl" style="margin-top:0">🩹 After the incident</div><div class="pm">Response, injuries & outcome</div></div>
+   <div class="fl" style="margin-top:4px">Was anyone injured?</div>
+   <div class="pills"><div class="pill" onclick="pick(this)">No</div><div class="pill on" onclick="pick(this)">Minor</div><div class="pill" onclick="pick(this)">Serious</div></div>
+   <div class="fl">Medical attention given?</div>
+   <div class="chk on" onclick="this.classList.toggle('on')"><div class="box">✓</div>First aid administered</div>
+   <div class="chk" onclick="this.classList.toggle('on')"><div class="box">✓</div>Doctor / hospital involved</div>
+   <div class="fl">Actions taken</div><div class="inp" style="color:#94a3b8">What did you do afterwards?…</div>`},
+ {phase:'AI Follow-up',html:`
+   <div class="ai"><div class="aitop"><div class="aib">✨</div><div><div class="aih">AI Follow-up</div><div class="ais">Based on what you reported</div></div></div>
+     <div class="aitext"><b>Suggested category:</b> Participant injury (minor fall)<br><b>NDIS reportable:</b> Likely not — but flagging for manager review.</div>
+     <div class="srcnote"><span>ℹ️</span><span>AI suggests the category &amp; whether it's <b>NDIS reportable</b> — you confirm.</span></div>
+   </div>
+   <div class="fl">Recommended follow-up actions</div>
+   <div class="chk on" onclick="this.classList.toggle('on')"><div class="box">✓</div>Notify team leader</div>
+   <div class="chk on" onclick="this.classList.toggle('on')"><div class="box">✓</div>Update participant safety plan</div>
+   <div class="chk" onclick="this.classList.toggle('on')"><div class="box">✓</div>Schedule GP review</div>`},
+ {phase:'Review & Submit',html:`
+   <div class="review"><div class="kv"><span class="k">Participant</span><span class="v">Emily Turner</span></div><div class="kv"><span class="k">Type</span><span class="v">Injury (minor)</span></div><div class="kv"><span class="k">Severity</span><span class="v">Medium</span></div><div class="kv"><span class="k">When</span><span class="v">24 Jun · 11:15 AM</span></div><div class="kv"><span class="k">Where</span><span class="v">12 Maple Street</span></div></div>
+   <div class="card"><div class="fl" style="margin-top:0">Summary</div><div style="font-size:12.5px;color:#475569;line-height:1.5">Participant had a minor fall in the garden. First aid administered, no serious injury. Team leader notified.</div></div>
+   <div class="srcnote"><span>ℹ️</span><span>Saved <b>offline</b> — submits &amp; syncs automatically when online.</span></div>`},
+];
+let incIdx=0;let incFrom='reports';
+function renderInc(){const s=incSteps[incIdx];document.getElementById('incBody').innerHTML=s.html;document.getElementById('incStepNo').textContent=(incIdx+1)+'/7';document.getElementById('incPhase').textContent=s.phase;document.getElementById('incBar').style.width=((incIdx+1)/7*100)+'%';document.getElementById('incNextBtn').textContent=incIdx===6?'Submit incident ✓':'Next step →';document.querySelector('#incident .scroll').scrollTo(0,0);}
+function incReset(){incIdx=0;renderInc();}
+function incNext(){if(incIdx<6){incIdx++;renderInc();}else{document.getElementById('incSucc').classList.add('on');}}
+function incBack(){if(incIdx>0){incIdx--;renderInc();}else{go(incFrom||'reports');}}
+let listening=false;
+function toggleListen(){listening=!listening;const c=document.getElementById('aiCard'),s=document.getElementById('aiS'),bd=document.getElementById('aiBadge'),tx=document.getElementById('aiTxt');
+  if(listening){c.style.borderColor='#0850FF';c.style.boxShadow='0 0 0 3px rgba(8,80,255,.15)';bd.textContent='🎤';s.innerHTML='<span style="color:#0850FF;font-weight:700">● Listening… tap to stop</span>';tx.textContent='🎙️ Speak now — your words turn into the report…';toast('🎤 Listening… speak now');}
+  else{c.style.borderColor='';c.style.boxShadow='';bd.textContent='✨';s.textContent='Tap to talk — I’ll write the report';tx.textContent='“Emily had breakfast at 10:30, took her morning medication, and we went for a short walk in the garden…”';toast('Draft updated ✨');}}
+let toastT;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1400);}
+// live timer on active shift
+setInterval(()=>{const el=document.getElementById('clk');if(!el)return;let [h,m,s]=el.textContent.split(':').map(Number);s++;if(s>59){s=0;m++;}if(m>59){m=0;h++;}el.textContent=[h,m,s].map(x=>String(x).padStart(2,'0')).join(':');},1000);
+// embed mode (inside walkthrough): strip page chrome + announce current screen
+if(window.self!==window.top){document.body.classList.add('embed');try{parent.postMessage({mentorScreen:'login'},'*');}catch(e){}}
+</script>
+</body></html>

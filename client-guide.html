@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<title>MentorOS Field App — Client Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--blue:#0850FF;--blue-d:#0A3AD0;--ink:#0F172A;--mut:#5B6678;--line:#E6E9F0;--green:#16A34A;--purple:#7A3FF0;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+body{color:var(--ink);font-size:13px;line-height:1.6;}
+.page{padding:48px 54px;page-break-after:always;position:relative;min-height:1122px;}
+.page:last-child{page-break-after:auto;}
+/* cover */
+.cover{background:linear-gradient(150deg,#0850FF,#0A3AD0);color:#fff;display:flex;flex-direction:column;justify-content:center;}
+.cover img{height:46px;align-self:flex-start;margin-bottom:50px;}
+.cover .k{font-size:13px;letter-spacing:.18em;text-transform:uppercase;opacity:.8;}
+.cover h1{font-size:48px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:12px 0 18px;max-width:620px;}
+.cover p{font-size:16px;opacity:.92;max-width:560px;line-height:1.6;}
+.cover .meta{margin-top:54px;font-size:13.5px;opacity:.9;border-top:1px solid rgba(255,255,255,.25);padding-top:18px;}
+/* headings */
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);}
+h2{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:6px 0 16px;}
+h3{font-size:15px;font-weight:700;margin:18px 0 8px;}
+p{margin-bottom:11px;color:#27303f;}
+.lead{font-size:15px;color:#374151;margin-bottom:18px;}
+ul{margin:0 0 12px 20px;}li{margin-bottom:6px;color:#27303f;}
+.callout{background:#F4F7FF;border-left:4px solid var(--blue);border-radius:10px;padding:16px 18px;margin:16px 0;font-size:13.5px;}
+.callout b{color:var(--blue-d);}
+/* screen grid */
+.grid{display:flex;flex-wrap:wrap;gap:18px;margin-top:10px;}
+.shot{width:150px;}
+.shot img{width:150px;border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 12px rgba(16,23,42,.08);display:block;}
+.shot .cap{font-size:11px;font-weight:700;margin-top:7px;}
+.shot .cd{font-size:10px;color:var(--mut);line-height:1.4;}
+/* flow */
+.flow{counter-reset:s;}
+.step{display:flex;gap:14px;margin-bottom:14px;}
+.step .n{flex:none;width:30px;height:30px;border-radius:9px;background:var(--blue);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.step .b{font-size:13px;}.step .b b{color:var(--ink);}
+/* table */
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;}
+th{text-align:left;padding:10px 12px;background:#F1F5FF;color:var(--blue-d);font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top;color:#27303f;}
+.two{display:flex;gap:20px;}
+.box{flex:1;border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+.box.green{background:#F0FAF4;border-color:#cdeeda;}.box.green h3{color:#0a7d44;margin-top:0;}
+.box.purple{background:#F4F1FF;border-color:#ddd2fb;}.box.purple h3{color:var(--purple);margin-top:0;}
+.foot{position:absolute;bottom:26px;left:54px;right:54px;display:flex;justify-content:space-between;font-size:10.5px;color:#9aa3b2;border-top:1px solid var(--line);padding-top:10px;}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;}
+.tag.g{background:#E7F7EF;color:#0a7d44;}.tag.p{background:#F1ECFF;color:var(--purple);}
+.phase{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
+.phase b{color:var(--blue-d);}
+</style></head>
+<body>
+
+<!-- COVER -->
+<div class="page cover">
+  <img src="assets/mentoros-logo.png" alt="MentorOS">
+  <div class="k">Mobile Design Proposal</div>
+  <h1>Field App for Support Workers</h1>
+  <p>An interactive prototype and design direction for the MentorOS mobile app — built from your real platform and benchmarked against the market.</p>
+  <div class="meta">Prepared for <b>Australian Mentoring Services</b> &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; Includes a live, clickable walkthrough</div>
+</div>
+
+<!-- 1. OPPORTUNITY -->
+<div class="page">
+  <div class="eyebrow">01 — The opportunity</div>
+  <h2>Why a mobile app, and why now</h2>
+  <p class="lead">MentorOS is already a complete NDIS management platform. It runs beautifully as a web dashboard for the office — but the people doing the actual work, your <b>support workers in the field</b>, have no dedicated mobile tool.</p>
+  <p>Your own dashboard makes the gap clear: shift-report completion currently sits at <b>0%</b> (“no shift report in 7 days”). Yet almost everything downstream depends on that shift data:</p>
+  <ul>
+    <li>AI participant briefings &amp; behaviour patterns are generated <i>from shift reports</i></li>
+    <li>NDIS claim evidence and compliance records rely on documented service delivery</li>
+    <li>Care-plan suggestions build as shifts are logged</li>
+  </ul>
+  <div class="callout"><b>The app's single mission:</b> make it effortless for support workers to capture shifts, notes and incidents from the field — which switches the entire platform on. It isn't “just an app”; it's the fuel that powers MentorOS.</div>
+  <h3>Who it's for</h3>
+  <p>Primary user: <b>support workers / mentors</b> on shift, often one-handed, in homes or cars, sometimes with poor signal. Every design decision serves speed, calm, trust and offline reliability.</p>
+  <div class="foot"><span>MentorOS — Field App Proposal</span><span>01</span></div>
+</div>
+
+<!-- 2. SCREENS -->
+<div class="page">
+  <div class="eyebrow">02 — What we've designed</div>
+  <h2>The screens (interactive prototype)</h2>
+  <p class="lead">A complete, clickable prototype in the real MentorOS brand. Bottom navigation keeps it to four tabs: <b>Today · People · Reports · More</b>. Below are the key screens.</p>
+  <div class="grid">
+    <div class="shot"><img src="shots/g-login.png"><div class="cap">Sign in</div><div class="cd">Secure login + Face ID</div></div>
+    <div class="shot"><img src="shots/g-today.png"><div class="cap">Today (home)</div><div class="cd">Day at a glance + GPS clock-in</div></div>
+    <div class="shot"><img src="shots/g-active.png"><div class="cap">Active shift</div><div class="cd">Live timer, quick capture, AI</div></div>
+    <div class="shot"><img src="shots/g-report.png"><div class="cap">Shift report ★</div><div class="cd">Voice → AI writes the draft</div></div>
+    <div class="shot"><img src="shots/g-signature.png"><div class="cap">Signature</div><div class="cd">Proof of service</div></div>
+    <div class="shot"><img src="shots/g-profile.png"><div class="cap">Participant profile</div><div class="cd">Risk, health, meds, goals</div></div>
+    <div class="shot"><img src="shots/g-incident.png"><div class="cap">Incident (7-step)</div><div class="cd">Your real reporting wizard</div></div>
+    <div class="shot"><img src="shots/g-meds.png"><div class="cap">Medication</div><div class="cd">From the care plan</div></div>
+    <div class="shot"><img src="shots/g-reports.png"><div class="cap">Reports</div><div class="cd">Drafts, submitted, incidents</div></div>
+    <div class="shot"><img src="shots/g-more.png"><div class="cap">More</div><div class="cd">Availability, timesheets, chat…</div></div>
+  </div>
+  <div class="foot"><span>MentorOS — Field App Proposal</span><span>02</span></div>
+</div>
+
+<!-- 3. HOW IT WORKS -->
+<div class="page">
+  <div class="eyebrow">03 — How it actually works</div>
+  <h2>A support worker's shift, end to end</h2>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><div class="b"><b>Sign in</b> with Face ID — fast and secure for the field.</div></div>
+    <div class="step"><div class="n">2</div><div class="b"><b>Today</b> shows the day's shifts; the next one is pinned. Tap <b>Clock in</b> — verified by GPS.</div></div>
+    <div class="step"><div class="n">3</div><div class="b"><b>Active shift</b> runs a live timer. One-tap capture for note, photo, meds, expense, mileage or incident — plus an AI assistant: <b>tap to talk</b> and it writes as you work.</div></div>
+    <div class="step"><div class="n">4</div><div class="b"><b>Clock out → Shift report.</b> Speak and AI drafts the full report. Supports &amp; medications are pre-listed from the plan — the worker just confirms. AI auto-flags anything that looks like an incident.</div></div>
+    <div class="step"><div class="n">5</div><div class="b"><b>Signature</b> — participant or guardian signs to confirm the service (NDIS proof).</div></div>
+    <div class="step"><div class="n">6</div><div class="b"><b>Submitted &amp; synced.</b> The participant profile, AI briefings and claim evidence all update automatically — even if it was saved offline.</div></div>
+  </div>
+  <div class="callout"><b>Privacy by design:</b> the AI is <b>tap-to-talk</b>, never always-listening — essential in a participant's home. Everything works offline and syncs when back online; the app locks behind biometrics.</div>
+  <div class="foot"><span>MentorOS — Field App Proposal</span><span>03</span></div>
+</div>
+
+<!-- 4. MENTOROS vs NEW -->
+<div class="page">
+  <div class="eyebrow">04 — Grounded in your platform</div>
+  <h2>What's from MentorOS vs what we're adding</h2>
+  <p class="lead">Nothing here is invented. Every screen maps to real MentorOS data; we add the field experience on top.</p>
+  <table>
+    <tr><th style="width:50%">From MentorOS — already exists</th><th>What we're suggesting — new for mobile</th></tr>
+    <tr><td>Shifts &amp; roster (Rostering &amp; Service)</td><td>GPS-verified clock in/out + live timer</td></tr>
+    <tr><td>Participant profiles — health, medications, safety plan, goals, NDIS plan</td><td>Risk-first mobile layout; medications pulled into the report</td></tr>
+    <tr><td>Shift Report Register fields (supports, observations, meds, goal progress, handover)</td><td>Voice → AI writes the full draft; supports pre-listed to confirm</td></tr>
+    <tr><td>7-step incident wizard</td><td>Mobile-optimised steps + voice + AI incident detection</td></tr>
+    <tr><td>Timesheets, payroll, expenses, site chat, compliance</td><td>One mobile “More” tab; push reminders before certs expire</td></tr>
+    <tr><td>AI briefings &amp; care-plan suggestions</td><td>Offline-first capture that finally feeds them reliably</td></tr>
+  </table>
+  <div class="foot"><span>MentorOS — Field App Proposal</span><span>04</span></div>
+</div>
+
+<!-- 5. COMPETITOR -->
+<div class="page">
+  <div class="eyebrow">05 — The market</div>
+  <h2>How we compare to ShiftCare</h2>
+  <p class="lead">ShiftCare is the strongest competitor. The strategy: <b>match</b> what's now expected, and <b>beat</b> it where it matters.</p>
+  <div class="two">
+    <div class="box green"><h3>✓ Matched (table stakes)</h3>
+      <ul style="margin-bottom:0">
+        <li>GPS clock in / out</li>
+        <li>Voice-to-text notes</li>
+        <li>Care plans &amp; client details</li>
+        <li>Digital signatures</li>
+        <li>Expenses &amp; mileage</li>
+        <li>Availability &amp; timesheets</li>
+        <li>NDIS-aligned records</li>
+      </ul>
+    </div>
+    <div class="box purple"><h3>★ Where we beat it</h3>
+      <ul style="margin-bottom:0">
+        <li><b>AI writes the full report</b> draft — not just a transcription/summary</li>
+        <li><b>AI auto-detects incidents</b> from what you say (compliance safety net)</li>
+        <li><b>Calmer, premium</b> interface — less clutter, faster</li>
+        <li>Each field shows <b>where its data comes from</b></li>
+        <li><b>MentorOS-native</b> — one connected platform, not a bolt-on add-on</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">ShiftCare's app is capable but generic. Our edge is a <b>premium, AI-first experience built directly into MentorOS</b> — so the data flows straight back into claiming, compliance and care planning.</div>
+  <div class="foot"><span>MentorOS — Field App Proposal</span><span>05</span></div>
+</div>
+
+<!-- 6. ROADMAP -->
+<div class="page">
+  <div class="eyebrow">06 — The road ahead</div>
+  <h2>What comes next</h2>
+  <p class="lead">This proposal covers the core field app. Further modules build on the same foundation.</p>
+  <div class="phase"><b>Phase 1 — Core field app (this proposal)</b><br>Sign in, Today &amp; shifts, AI shift report, participant profiles, incidents, signatures, quick capture. The pieces that close the capture gap.</div>
+  <div class="phase"><b>Phase 2 — Intelligence &amp; reliability</b><br>Deeper AI (auto follow-ups, summaries, suggested care-plan updates), a full offline sync engine, and smart push notifications (new shift, cert expiry, handover).</div>
+  <div class="phase"><b>Phase 3 — Wider ecosystem</b><br>A read-only <b>family / guardian app</b> for updates, richer team messaging &amp; handover, and a training / certifications module.</div>
+  <div class="phase"><b>Throughout — quality</b><br>WCAG AA accessibility, dark mode, biometric security, and performance — non-negotiables for this sector.</div>
+  <div class="foot"><span>MentorOS — Field App Proposal</span><span>06</span></div>
+</div>
+
+<!-- 7. NEXT STEPS -->
+<div class="page">
+  <div class="eyebrow">07 — Next steps</div>
+  <h2>Where to from here</h2>
+  <ul>
+    <li><b>Explore the live prototype</b> — open the shared link and tap through the app + guided walkthrough.</li>
+    <li><b>Confirm the shift-report fields</b> with your NDIS / compliance lead so the data matches your audit requirements exactly.</li>
+    <li><b>Sign off the design direction</b> — then we move to build.</li>
+    <li><b>Recommended build:</b> Flutter for one premium codebase across iOS &amp; Android, with offline-first sync into MentorOS.</li>
+  </ul>
+  <div class="callout" style="margin-top:24px"><b>In one line:</b> a premium, AI-first mobile app that makes capturing shifts effortless — closing the 0% gap and powering everything MentorOS already does.</div>
+  <p style="margin-top:40px;color:var(--mut);font-size:12px">Thank you. We'd love to walk you through the prototype live.</p>
+  <div class="foot"><span>MentorOS — Field App Proposal · Australian Mentoring Services</span><span>07</span></div>
+</div>
+
+</body></html>

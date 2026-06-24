@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MentorOS Field App — Guided Walkthrough</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--blue:#0850FF;--blue-d:#0A3AD0;--ink:#0F172A;--mut:#64748B;--line:#E6E9F0;--bg:#EEF2F8;--green:#16A34A;--purple:#7A3FF0;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
+body{background:var(--bg);color:var(--ink);min-height:100vh;}
+.top{background:linear-gradient(120deg,#0850FF,#0A3AD0);color:#fff;padding:20px 34px;display:flex;align-items:center;gap:11px;}
+.top svg{flex:none;}
+.top .t{font-size:19px;font-weight:800;letter-spacing:-.01em;}
+.top .s{font-size:12.5px;opacity:.85;margin-left:auto;max-width:420px;text-align:right;}
+.stage{display:flex;gap:40px;align-items:flex-start;justify-content:center;padding:34px 34px 60px;flex-wrap:wrap;}
+/* phone side */
+.left{flex:0 0 auto;position:sticky;top:24px;}
+.phoneframe{width:360px;height:760px;background:#0b1020;border-radius:46px;padding:13px;box-shadow:0 30px 70px rgba(15,23,42,.35);}
+.phoneframe iframe{width:100%;height:100%;border:none;border-radius:34px;background:#F5F7FB;}
+.hintbar{text-align:center;font-size:12px;color:var(--mut);margin-top:14px;}
+/* detail side */
+.right{flex:1;max-width:560px;min-width:340px;}
+.crumb{font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;}
+.h{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px;}
+.sub{font-size:15px;color:var(--mut);line-height:1.6;margin-bottom:24px;}
+.block{border-radius:16px;padding:18px 20px;margin-bottom:16px;border:1px solid var(--line);background:#fff;}
+.block .lbl{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px;}
+.tagdot{width:10px;height:10px;border-radius:50%;}
+.block ul{margin:0;padding-left:18px;}
+.block li{font-size:13.5px;color:#374151;line-height:1.65;margin-bottom:5px;}
+.b-happening .lbl{color:var(--ink);} .b-happening{background:#fff;}
+.b-mentoros{background:#F0FAF4;border-color:#cdeeda;} .b-mentoros .lbl{color:#0a7d44;}
+.b-suggest{background:#F4F1FF;border-color:#ddd2fb;} .b-suggest .lbl{color:var(--purple);}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;font-weight:600;color:#475569;margin-bottom:22px;}
+.legend span{display:inline-flex;align-items:center;gap:7px;}
+.progress{font-size:12px;color:var(--mut);margin-top:18px;}
+@media(max-width:820px){.left{position:static}}
+</style></head>
+<body>
+  <div class="top">
+    <img src="assets/mentoros-logo.png" alt="MentorOS" style="height:26px">
+    <div class="t">Field App — Guided Walkthrough</div>
+    <div class="s">Tap through the app on the left → the panel on the right explains each screen.</div>
+  </div>
+
+  <div class="stage">
+    <div class="left">
+      <div class="phoneframe"><iframe id="app" src="prototype.html"></iframe></div>
+    </div>
+
+    <div class="right">
+      <div class="legend">
+        <span><span class="tagdot" style="background:var(--green)"></span> From MentorOS (already exists)</span>
+        <span><span class="tagdot" style="background:var(--purple)"></span> What we're suggesting (new)</span>
+      </div>
+      <div class="crumb" id="crumb">Screen</div>
+      <div class="h" id="title">Welcome</div>
+      <div class="sub" id="sub">Tap “Sign in” inside the phone to begin the tour.</div>
+
+      <div class="block b-happening">
+        <div class="lbl">📍 What's happening here</div>
+        <ul id="happening"><li>—</li></ul>
+      </div>
+      <div class="block b-mentoros">
+        <div class="lbl"><span class="tagdot" style="background:var(--green)"></span> From MentorOS (existing function)</div>
+        <ul id="mentoros"><li>—</li></ul>
+      </div>
+      <div class="block b-suggest">
+        <div class="lbl"><span class="tagdot" style="background:var(--purple)"></span> What we're suggesting (new)</div>
+        <ul id="suggest"><li>—</li></ul>
+      </div>
+      <div class="progress" id="prog"></div>
+    </div>
+  </div>
+
+<script>
+const li = arr => arr.map(x=>`<li>${x}</li>`).join('');
+const D = {
+  login:{crumb:'Entry',title:'Sign in',sub:'The support worker opens the app and signs in securely.',
+    happening:['Alex (a support worker) signs into the field app.'],
+    mentoros:['Staff accounts & roles already live in MentorOS → People & Culture. “Support Worker” is an existing role.'],
+    suggest:['A dedicated mobile login with Face ID / fingerprint — fast, secure, made for the field.']},
+  today:{crumb:'Home',title:'Today',sub:'The worker’s home base — the day at a glance.',
+    happening:['Shows today’s shifts; the next one is pinned and ready to clock into.'],
+    mentoros:['Shifts come straight from MentorOS → Rostering & Service (the roster manager builds).'],
+    suggest:['A calm mobile “Today” home with the next shift pinned + one-tap GPS clock-in. MentorOS web has no field home like this.']},
+  active:{crumb:'On shift',title:'Active shift',sub:'The live shift while the worker is with the participant.',
+    happening:['Timer runs, participant is shown, and quick actions let the worker capture things as they happen.'],
+    mentoros:['The shift, participant and site all come from MentorOS.'],
+    suggest:['GPS-verified clock-in, a live timer, 6 one-tap capture actions, and an AI assistant — all new for the field.']},
+  report:{crumb:'★ Core feature',title:'Shift report',sub:'The most important screen — and the gap MentorOS needs filled.',
+    happening:['At the end of the shift the worker completes the report: supports given, observations, meds, goal progress, handover.'],
+    mentoros:['These exact fields ARE MentorOS’s Shift Report Register columns. This is the report that currently shows “0% completion / no report in 7 days”.'],
+    suggest:['Speak → AI writes the full draft. AI auto-flags possible incidents. Supports & meds are pre-listed to just confirm. THIS closes the capture gap that powers the whole platform.']},
+  signature:{crumb:'On shift',title:'Confirm service',sub:'Proof the service was delivered.',
+    happening:['The participant or guardian signs to confirm the visit.'],
+    mentoros:['Proof of service feeds NDIS claiming in MentorOS → Finance & Claims.'],
+    suggest:['On-device signature capture + offline save — no paperwork.']},
+  people:{crumb:'Tab',title:'Participants',sub:'The people this worker supports.',
+    happening:['A searchable list of the worker’s participants.'],
+    mentoros:['Participant directory & NDIS numbers from MentorOS → Participants & Sites.'],
+    suggest:['A field-friendly list showing only the worker’s assigned participants.']},
+  profile:{crumb:'Participant',title:'Participant profile',sub:'Everything the worker needs to know — before and during the shift.',
+    happening:['Risk flags up top, then health, medications, safety plan, goals and NDIS plan via tabs.'],
+    mentoros:['All of this is real MentorOS data — the participant’s 11 profile tabs (Health & Medical, Safety & Wellbeing, Goals, NDIS Plan…).'],
+    suggest:['Mobile layout that surfaces risk flags & safety FIRST, with quick tabs for the rest.']},
+  reports:{crumb:'Tab',title:'Reports',sub:'The worker’s own reports & incidents.',
+    happening:['Switch between shift reports (drafts/submitted) and incidents.'],
+    mentoros:['Shift Report Register + incident records from MentorOS.'],
+    suggest:['A simple personal view + a one-tap “Report an incident”.']},
+  incident:{crumb:'Compliance',title:'Report an incident',sub:'Fast, guided incident reporting — on the spot.',
+    happening:['A step-by-step wizard to document an incident properly.'],
+    mentoros:['This IS MentorOS’s real 7-step incident wizard: Three A’s → details → before → what happened → after → AI follow-up → review & submit.'],
+    suggest:['Mobile-optimised steps, voice dictation, and AI follow-up so nothing reportable is missed — captured immediately, not hours later.']},
+  more:{crumb:'Tab',title:'More',sub:'Everything else, in one place.',
+    happening:['Availability, timesheets, expenses, messages, certifications, settings.'],
+    mentoros:['Each of these already exists across MentorOS modules (Rostering, Finance, People & Culture, site chat).'],
+    suggest:['Brought together into one tidy mobile “More” tab for the worker.']},
+  meds:{crumb:'Quick action',title:'Medication',sub:'Log medication given during the shift.',
+    happening:['The worker ticks each medication as given; the time logs automatically.'],
+    mentoros:['The medication schedule comes from the participant’s Health & Medical → Medications.'],
+    suggest:['One-tap “given” with an automatic time-stamp.']},
+  expense:{crumb:'Quick action',title:'Add expense',sub:'Capture a shift expense on the spot.',
+    happening:['Amount, category, receipt photo and a note.'],
+    mentoros:['Expenses feed MentorOS → Finance for reimbursement.'],
+    suggest:['Instant capture + receipt photo from the phone.']},
+  mileage:{crumb:'Quick action',title:'Log mileage',sub:'Record travel done during the shift.',
+    happening:['Distance, from/to, and purpose.'],
+    mentoros:['Reimbursed via MentorOS payroll.'],
+    suggest:['GPS auto-tracks the distance — no manual odometer reading.']},
+  note:{crumb:'Quick action',title:'Add note',sub:'A quick note mid-shift.',
+    happening:['The worker jots or dictates a quick note.'],
+    mentoros:['Saved to the participant’s Shift Notes in MentorOS.'],
+    suggest:['Voice-to-text so it takes seconds, and it pre-fills the shift report later.']},
+  photo:{crumb:'Quick action',title:'Add photo',sub:'Attach a photo as evidence.',
+    happening:['Capture a photo and add a caption.'],
+    mentoros:['Stored as evidence on the shift & participant record.'],
+    suggest:['On-the-spot camera capture for NDIS evidence.']},
+  availability:{crumb:'More',title:'My availability',sub:'When the worker can work.',
+    happening:['Set available days and hours.'],
+    mentoros:['Managers use this in MentorOS → Rostering to build the roster.'],
+    suggest:['Workers set it themselves from the phone — no phone calls.']},
+  timesheets:{crumb:'More',title:'Timesheets',sub:'Hours worked and approval status.',
+    happening:['See this week’s hours and which shifts are approved/pending.'],
+    mentoros:['Built from clocked shifts (Rostering) → feeds MentorOS payroll export.'],
+    suggest:['A clear personal timesheet view in the worker’s pocket.']},
+  messages:{crumb:'More',title:'Messages / handover',sub:'Stay in sync with the team.',
+    happening:['Handover notes and team chat for the site.'],
+    mentoros:['Comes from the site’s Message Board & Live Chat in MentorOS.'],
+    suggest:['Handover surfaced on mobile so the next shift is always informed.']},
+  certs:{crumb:'More',title:'My certifications',sub:'Keep compliance up to date.',
+    happening:['First Aid, NDIS screening, manual handling — with expiry status.'],
+    mentoros:['From MentorOS → People & Culture → Compliance.'],
+    suggest:['Expiry alerts pushed to the worker before they lapse.']},
+  settings:{crumb:'More',title:'Settings',sub:'App preferences & security.',
+    happening:['Dark mode, biometric login, notifications, offline sync, sign out.'],
+    mentoros:['Tied to the worker’s MentorOS account.'],
+    suggest:['Field-focused options: biometric lock, offline sync, dark mode for evening shifts.']},
+};
+function render(id){const d=D[id];if(!d)return;document.getElementById('crumb').textContent=d.crumb;document.getElementById('title').textContent=d.title;document.getElementById('sub').textContent=d.sub;document.getElementById('happening').innerHTML=li(d.happening);document.getElementById('mentoros').innerHTML=li(d.mentoros);document.getElementById('suggest').innerHTML=li(d.suggest);
+  const keys=Object.keys(D);document.getElementById('prog').textContent='Screen: '+d.title+'  ·  '+(keys.indexOf(id)+1)+' of '+keys.length+' explained';}
+window.addEventListener('message',e=>{if(e.data&&e.data.mentorScreen)render(e.data.mentorScreen);});
+</script>
+</body></html>
