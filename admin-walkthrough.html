@@ -51,7 +51,7 @@ body{background:var(--bg);color:var(--ink);min-height:100vh;}
 
   <div class="stage">
     <div class="left">
-      <div class="phoneframe"><iframe id="app" src="admin-dashboard.html?v=3"></iframe></div>
+      <div class="phoneframe"><iframe id="app" src="admin-dashboard.html?v=4"></iframe></div>
     </div>
 
     <div class="right">
@@ -166,6 +166,50 @@ const D = {
     happening:['Open / high-risk counts, a monthly trend and a category breakdown chart.'],
     mentoros:['The MentorOS Risk Analytics — incident trends, categories, resolution times.'],
     suggest:['Managers spot patterns on mobile the moment incidents are logged from the field.']},
+  onboarding:{crumb:'Participants',title:'New participant onboarding',sub:'Intake — now on mobile too.',
+    happening:['A 12-step intake. Upload documents and AI pre-fills the details.'],
+    mentoros:['The MentorOS 12-step onboarding wizard with AI document extraction.'],
+    suggest:['Now fully usable on the phone — start an intake anywhere; AI does the typing.']},
+  'add-site':{crumb:'Participants',title:'Add site',sub:'Create a new SIL/site.',
+    happening:['Name, address, type, capacity and a location leader.'],
+    mentoros:['Adds a location to MentorOS Participants & Sites.'],
+    suggest:['A quick mobile form so a new home can be set up on the spot.']},
+  'new-shift':{crumb:'Rostering',title:'New shift',sub:'Add a shift to the roster.',
+    happening:['Pick participant, site, date/time, worker and NDIS service type.'],
+    mentoros:['Creates a shift in MentorOS Rostering.'],
+    suggest:['Fill a gap from your phone — no need to open the desktop roster.']},
+  'leave-req':{crumb:'Rostering',title:'Leave request',sub:'Log staff leave.',
+    happening:['Staff member, leave type, dates and a reason.'],
+    mentoros:['Feeds leave into MentorOS Rostering & payroll.'],
+    suggest:['Approve or log leave on the go.']},
+  payroll:{crumb:'Rostering',title:'Payroll Export',sub:'Generate the pay file.',
+    happening:['Pick a period, preview approved hours, and generate the CSV.'],
+    mentoros:['The MentorOS Employment Hero–compatible payroll export.'],
+    suggest:['Kick off the export from your phone — only approved timesheets are included.']},
+  'roc-builder':{crumb:'Finance',title:'ROC Builder',sub:'SIL roster of care.',
+    happening:['Choose a SIL site and set the weekday/weekend care ratios.'],
+    mentoros:['The MentorOS ROC Builder that drives NDIS SIL claiming.'],
+    suggest:['Review and adjust ratios on mobile; the ROC powers SIL claims.']},
+  'new-invoice':{crumb:'Finance',title:'New invoice',sub:'Raise an NDIS invoice.',
+    happening:['Participant, claim period and line items with a total.'],
+    mentoros:['Creates an invoice / claim in MentorOS Finance.'],
+    suggest:['Generate an invoice from anywhere.']},
+  workforce:{crumb:'People',title:'Workforce reports',sub:'Team analytics.',
+    happening:['Leave balances, hours worked and certification compliance.'],
+    mentoros:['MentorOS People & Culture reporting.'],
+    suggest:['Key workforce numbers and exports, now on mobile.']},
+  export:{crumb:'Reports',title:'Export',sub:'Download data.',
+    happening:['Choose a date range, format (CSV/PDF) and what to include, then generate.'],
+    mentoros:['MentorOS export tools (incident reports, registers, etc.).'],
+    suggest:['Generate and download reports straight from the phone.']},
+  'roster-edit':{crumb:'Rostering',title:'Edit roster',sub:'Adjust the schedule.',
+    happening:['See a day’s shifts, edit them, or add a new shift.'],
+    mentoros:['Editing the MentorOS Employee Schedule.'],
+    suggest:['Make quick roster changes on mobile; deep planning still shines on desktop.']},
+  'profile-tabs':{crumb:'Participants',title:'Full profile',sub:'All 11 profile sections.',
+    happening:['Every section of the participant record — Health, Safety, Goals, NDIS Plans and more.'],
+    mentoros:['The participant’s complete MentorOS profile (11 tabs).'],
+    suggest:['The whole record reachable on mobile, organised for quick access.']},
 };
 function render(id){const d=D[id];if(!d)return;document.getElementById('crumb').textContent=d.crumb;document.getElementById('title').textContent=d.title;document.getElementById('sub').textContent=d.sub;document.getElementById('happening').innerHTML=li(d.happening);document.getElementById('mentoros').innerHTML=li(d.mentoros);document.getElementById('suggest').innerHTML=li(d.suggest);
   const keys=Object.keys(D);document.getElementById('prog').textContent='Screen: '+d.title+'  ·  '+(keys.indexOf(id)+1)+' of '+keys.length+' explained';}
