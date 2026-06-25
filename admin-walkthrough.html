@@ -51,7 +51,7 @@ body{background:var(--bg);color:var(--ink);min-height:100vh;}
 
   <div class="stage">
     <div class="left">
-      <div class="phoneframe"><iframe id="app" src="admin-dashboard.html?v=1"></iframe></div>
+      <div class="phoneframe"><iframe id="app" src="admin-dashboard.html?v=2"></iframe></div>
     </div>
 
     <div class="right">
@@ -130,6 +130,42 @@ const D = {
     happening:['Jump to any module, open settings, or sign out.'],
     mentoros:['Access to all five MentorOS modules.'],
     suggest:['A tidy mobile menu; the heavy admin work (onboarding, payroll, ROC) is signposted to the web.']},
+  'a-profile':{crumb:'Participants',title:'Participant profile',sub:'A full participant record, admin view.',
+    happening:['Risk flags, quick info, medications and the NDIS plan — with a link to the full 11-tab profile.'],
+    mentoros:['The participant’s complete MentorOS profile (Health & Medical, Safety, Goals, NDIS Plan…).'],
+    suggest:['A read-first mobile view so a manager can check a participant fast; deep edits stay on the web.']},
+  'site-detail':{crumb:'Participants',title:'Site detail',sub:'A SIL home at a glance.',
+    happening:['Capacity & staff, the site message board, live chat, schedule and to-do’s.'],
+    mentoros:['Exactly the MentorOS site page — Message Board, Live Chat, Schedule, To-Do’s.'],
+    suggest:['Brings the site’s handover and tasks to the manager’s phone.']},
+  'shift-register':{crumb:'Insights',title:'Shift Report Register',sub:'Every shift report, org-wide.',
+    happening:['A filterable register of shift reports across all participants, with status.'],
+    mentoros:['The MentorOS Shift Report Register — the org-wide record this app is designed to fill.'],
+    suggest:['A mobile read of who has and hasn’t documented; export stays on the web.']},
+  'ai-brief':{crumb:'Insights',title:'AI Participant Briefings',sub:'AI summaries from shift data.',
+    happening:['Per-participant AI summaries highlighting trends, incidents and things to watch.'],
+    mentoros:['MentorOS already generates AI briefings & care-plan suggestions from shift reports.'],
+    suggest:['Surfaced on mobile so managers get the gist in seconds — powered by the field app’s reports.']},
+  'roster-cal':{crumb:'Rostering',title:'Roster Calendar',sub:'The fortnightly schedule.',
+    happening:['A two-week calendar with shift counts, plus today’s shifts.'],
+    mentoros:['The MentorOS Employee Schedule (fortnightly roster).'],
+    suggest:['A read-only mobile view of coverage; building & editing the roster stays on the web.']},
+  claims:{crumb:'Finance',title:'Claims Pipeline',sub:'NDIS claim lines.',
+    happening:['Pending claim value, claim lines and success rate, with batching signposted to web.'],
+    mentoros:['From MentorOS Finance — the claiming pipeline.'],
+    suggest:['A mobile health-check; heavy claim batching stays on the web.']},
+  'staff-dir':{crumb:'People',title:'Staff Directory',sub:'Your whole team.',
+    happening:['All 7 employees with roles, leave balances and status, plus pending invitations.'],
+    mentoros:['The MentorOS staff directory & invitations.'],
+    suggest:['A pocket directory so managers can check roles & leave and invite staff on the go.']},
+  compliance:{crumb:'People',title:'Compliance',sub:'Certifications & screening.',
+    happening:['Current / due-soon / expired counts and each certification’s status.'],
+    mentoros:['From MentorOS People & Culture — compliance tracking.'],
+    suggest:['Push alerts before a certification lapses, so the team stays audit-ready.']},
+  'risk-analytics':{crumb:'Risk',title:'Risk Analytics',sub:'Trends & categories.',
+    happening:['Open / high-risk counts, a monthly trend and a category breakdown chart.'],
+    mentoros:['The MentorOS Risk Analytics — incident trends, categories, resolution times.'],
+    suggest:['Managers spot patterns on mobile the moment incidents are logged from the field.']},
 };
 function render(id){const d=D[id];if(!d)return;document.getElementById('crumb').textContent=d.crumb;document.getElementById('title').textContent=d.title;document.getElementById('sub').textContent=d.sub;document.getElementById('happening').innerHTML=li(d.happening);document.getElementById('mentoros').innerHTML=li(d.mentoros);document.getElementById('suggest').innerHTML=li(d.suggest);
   const keys=Object.keys(D);document.getElementById('prog').textContent='Screen: '+d.title+'  ·  '+(keys.indexOf(id)+1)+' of '+keys.length+' explained';}

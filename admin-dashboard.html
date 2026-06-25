@@ -52,7 +52,12 @@ body.embed .screenwrap{height:100%;border-radius:0;}
 .pn{font-size:14px;font-weight:700;}.pm{font-size:11.5px;color:var(--mut);margin-top:1px;}
 .grow{flex:1;}
 .stch{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;}
-.st-amber{background:var(--amber-l);color:var(--amber);}.st-green{background:var(--green-l);color:#0a7d44;}.st-red{background:var(--red-l);color:var(--red);}
+.st-amber{background:var(--amber-l);color:var(--amber);}.st-green{background:var(--green-l);color:#0a7d44;}.st-red{background:var(--red-l);color:var(--red);}.st-web{background:#eef1f6;color:#64748b;}.st-blue{background:var(--blue-l);color:var(--blue);}
+.li .pm.mini{font-size:11px;}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:12px;}
+.cal .d{aspect-ratio:1;border-radius:9px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;}
+.cal .d .dn{font-weight:700;}.cal .d.has{background:var(--blue-l);border-color:#c9d6ff;}.cal .d .sh{font-size:8px;color:var(--blue);font-weight:700;}
+.cal .hd{font-size:9px;color:var(--mut);text-align:center;font-weight:700;}
 /* stats */
 .statline{display:flex;gap:10px;margin-bottom:14px;}
 .statbox{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;}
@@ -169,13 +174,18 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n">8</div><div class="l">participants</div></div><div class="statbox"><div class="n">26</div><div class="l">sites</div></div><div class="statbox"><div class="n">1</div><div class="l">onboarding</div></div></div>
       <div class="attn"><div class="at"><i data-lucide="triangle-alert"></i> Needs attention</div><div style="font-size:12.5px;color:#7a4a09;margin-top:6px">8 participants have no Safety Plan · 8 with no recent shift report</div></div>
-      <div class="sect">Participants <a>View all</a></div>
-      <div class="li"><div class="pav">ET</div><div class="grow"><div class="pn">Emily Turner</div><div class="pm">NDIS •••• 0001 · 12 Maple Street</div></div><span class="stch st-red">No safety plan</span></div>
-      <div class="li"><div class="pav">JL</div><div class="grow"><div class="pn">Jacob Lee</div><div class="pm">NDIS •••• 0002 · 8 River Road</div></div><span class="stch st-green">Active</span></div>
-      <div class="li"><div class="pav">SA</div><div class="grow"><div class="pn">Sophie Adams</div><div class="pm">NDIS •••• 0003 · 30 Oak Avenue</div></div><span class="stch st-amber">No report 7d</span></div>
-      <div class="sect" style="margin-top:8px">Sites</div>
-      <div class="li"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">12 Maple Street (SIL)</div><div class="pm">3/4 capacity · 2 staff</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">8 River Road (SIL)</div><div class="pm">2/4 capacity · 1 staff</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="sect">Record · capture &amp; create</div>
+      <div class="li" onclick="toast('12-step onboarding — best on the web app')"><div class="pav"><i data-lucide="user-plus"></i></div><div class="grow"><div class="pn">New participant onboarding</div><div class="pm">12-step intake · 1 in progress</div></div><span class="stch st-web">Web</span></div>
+      <div class="li" onclick="toast('Add a site — on the web app')"><div class="pav"><i data-lucide="map-pin"></i></div><div class="grow"><div class="pn">Add site / location</div></div><span class="stch st-web">Web</span></div>
+      <div class="sect" style="margin-top:8px">Manage · view &amp; organise</div>
+      <div class="li" onclick="go('a-profile')"><div class="pav">ET</div><div class="grow"><div class="pn">Emily Turner</div><div class="pm">NDIS •••• 0001 · 12 Maple Street</div></div><span class="stch st-red">No safety plan</span></div>
+      <div class="li" onclick="go('a-profile')"><div class="pav">JL</div><div class="grow"><div class="pn">Jacob Lee</div><div class="pm">NDIS •••• 0002 · 8 River Road</div></div><span class="stch st-green">Active</span></div>
+      <div class="li" onclick="go('a-profile')"><div class="pav">SA</div><div class="grow"><div class="pn">Sophie Adams</div><div class="pm">NDIS •••• 0003 · 30 Oak Avenue</div></div><span class="stch st-amber">No report 7d</span></div>
+      <div class="li" onclick="go('site-detail')"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">Sites &amp; locations</div><div class="pm">26 SIL homes · capacity &amp; staff</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
+      <div class="li" onclick="go('shift-register')"><div class="pav"><i data-lucide="file-text"></i></div><div class="grow"><div class="pn">Shift Report Register</div><div class="pm">org-wide shift reports</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="go('ai-brief')"><div class="pav" style="background:#F1ECFF;color:var(--purple)"><i data-lucide="sparkles"></i></div><div class="grow"><div class="pn">AI Participant Briefings</div><div class="pm">summaries from shift data</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="toast('0 pending suggestions')"><div class="pav" style="background:#F1ECFF;color:var(--purple)"><i data-lucide="wand-sparkles"></i></div><div class="grow"><div class="pn">Profile Suggestions Queue</div><div class="pm">AI care-plan updates · 0 pending</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
     </div></div>
     <div class="nav" id="nav-part"></div>
   </div>
@@ -187,12 +197,15 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
       <div class="h-name" style="font-size:20px">Rostering &amp; Service</div></div>
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n tred">0%</div><div class="l">roster coverage</div></div><div class="statbox"><div class="n tamber">0%</div><div class="l">report completion</div></div></div>
-      <div class="sect">Pending timesheet approvals <a onclick="go('approvals')">Review</a></div>
-      <div class="li" onclick="go('approvals')"><div class="pav">AC</div><div class="grow"><div class="pn">Alex Carter · 4h</div><div class="pm">12 Maple St · today 10:00–14:00</div></div><span class="stch st-amber">Pending</span></div>
-      <div class="li" onclick="go('approvals')"><div class="pav">JD</div><div class="grow"><div class="pn">Jordan Diaz · 6h</div><div class="pm">8 River Rd · today 8:00–14:00</div></div><span class="stch st-amber">Pending</span></div>
-      <div class="sect" style="margin-top:8px">This fortnight</div>
-      <div class="card"><div class="kv"><span class="k">Shifts scheduled</span><span class="v">0</span></div><div class="kv"><span class="k">Hours</span><span class="v">0h</span></div><div class="kv"><span class="k">Payroll export</span><span class="v tmut">Web only</span></div></div>
-      <button class="btn btn-soft" onclick="go('approvals')">Open approvals</button>
+      <div class="sect">Record · capture &amp; create</div>
+      <div class="li" onclick="toast('New shift — build on the web roster')"><div class="pav"><i data-lucide="calendar-plus"></i></div><div class="grow"><div class="pn">New shift</div></div><span class="stch st-web">Web</span></div>
+      <div class="li" onclick="toast('Add leave request')"><div class="pav"><i data-lucide="plane"></i></div><div class="grow"><div class="pn">Leave request</div></div><span class="stch st-web">Web</span></div>
+      <div class="sect" style="margin-top:8px">Manage · view &amp; organise</div>
+      <div class="li" onclick="go('roster-cal')"><div class="pav"><i data-lucide="calendar-days"></i></div><div class="grow"><div class="pn">Roster Calendar</div><div class="pm">fortnightly employee schedule</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="go('approvals')"><div class="pav"><i data-lucide="check-check"></i></div><div class="grow"><div class="pn">Timesheet Approval</div><div class="pm">approve before payroll</div></div><span class="stch st-amber">2</span></div>
+      <div class="li" onclick="toast('Payroll export — Employment Hero CSV, on web')"><div class="pav"><i data-lucide="file-spreadsheet"></i></div><div class="grow"><div class="pn">Payroll Export</div><div class="pm">Employment Hero CSV</div></div><span class="stch st-web">Web</span></div>
+      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
+      <div class="li" onclick="go('shift-register')"><div class="pav"><i data-lucide="clipboard-list"></i></div><div class="grow"><div class="pn">Shift Documentation</div><div class="pm">report completion 0%</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
     </div></div>
     <div class="nav" id="nav-rost"></div>
   </div>
@@ -205,11 +218,14 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n">$0</div><div class="l">monthly revenue</div></div><div class="statbox"><div class="n">$0</div><div class="l">pending claims</div></div></div>
       <div class="statline"><div class="statbox"><div class="n">$0</div><div class="l">outstanding</div></div><div class="statbox"><div class="n">0%</div><div class="l">claim success</div></div></div>
-      <div class="sect">Claims pipeline <a onclick="go('approvals')">Review</a></div>
-      <div class="card"><div class="statusrow"><span class="sdot s-green"></span>All plans healthy · no claims in pipeline</div></div>
-      <div class="sect" style="margin-top:8px">SIL claiming (22 sites)</div>
-      <div class="li"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">12 Maple Street</div><div class="pm">Roster of Care · 0/4 participants</div></div><span class="stch st-amber">Setup</span></div>
-      <div class="card" style="margin-top:4px;font-size:11.5px;color:var(--mut);display:flex;gap:8px;align-items:center"><i data-lucide="info" style="color:var(--blue)"></i> Building ROCs &amp; payroll export are done on the web app.</div>
+      <div class="sect">Record · capture &amp; create</div>
+      <div class="li" onclick="toast('ROC Builder — 22 SIL sites, on the web app')"><div class="pav"><i data-lucide="layout-grid"></i></div><div class="grow"><div class="pn">ROC Builder (SIL)</div><div class="pm">22 sites · roster of care</div></div><span class="stch st-web">Web</span></div>
+      <div class="li" onclick="toast('Create invoice — on web')"><div class="pav"><i data-lucide="file-plus"></i></div><div class="grow"><div class="pn">New invoice</div></div><span class="stch st-web">Web</span></div>
+      <div class="sect" style="margin-top:8px">Manage · view &amp; organise</div>
+      <div class="li" onclick="go('claims')"><div class="pav"><i data-lucide="receipt"></i></div><div class="grow"><div class="pn">Claims Pipeline</div><div class="pm">0 claim lines · approve &amp; submit</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="toast('Claim schedule — upcoming claim runs')"><div class="pav"><i data-lucide="calendar-clock"></i></div><div class="grow"><div class="pn">Claim Schedule</div><div class="pm">upcoming claim runs</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
+      <div class="li" onclick="toast('Funding burn — plan utilisation per participant')"><div class="pav"><i data-lucide="trending-up"></i></div><div class="grow"><div class="pn">Funding Burn</div><div class="pm">plan utilisation</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
     </div></div>
     <div class="nav" id="nav-fin"></div>
   </div>
@@ -221,13 +237,14 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
       <div class="h-name" style="font-size:20px">People &amp; Culture</div></div>
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n">7</div><div class="l">staff</div></div><div class="statbox"><div class="n">1</div><div class="l">pending invite</div></div><div class="statbox"><div class="n tgreen">100%</div><div class="l">compliant</div></div></div>
-      <div class="sect">Staff <a>View all</a></div>
-      <div class="li"><div class="pav">AC</div><div class="grow"><div class="pn">Alex Carter</div><div class="pm">Support Worker</div></div><span class="stch st-green">Active</span></div>
-      <div class="li"><div class="pav">MR</div><div class="grow"><div class="pn">Maria Reyes</div><div class="pm">Team Leader</div></div><span class="stch st-green">Active</span></div>
-      <div class="li"><div class="pav">SM</div><div class="grow"><div class="pn">Sam Mills</div><div class="pm">Support Worker</div></div><span class="stch st-amber">Cert due</span></div>
-      <div class="sect" style="margin-top:8px">Invitations</div>
-      <div class="li"><div class="pav"><i data-lucide="mail"></i></div><div class="grow"><div class="pn">new.worker@example.com</div><div class="pm">Support Worker · sent 16 Jun</div></div><span class="stch st-amber">Pending</span></div>
-      <button class="btn btn-soft" onclick="toast('Invite user')"><i data-lucide="user-plus" style="width:14px;height:14px;vertical-align:-2px"></i> Invite user</button>
+      <div class="sect">Record · capture &amp; create</div>
+      <div class="li" onclick="toast('Invite sent ✓')"><div class="pav"><i data-lucide="user-plus"></i></div><div class="grow"><div class="pn">Invite user</div><div class="pm">send invitation email</div></div><span class="stch st-blue">Quick</span></div>
+      <div class="sect" style="margin-top:8px">Manage · view &amp; organise</div>
+      <div class="li" onclick="go('staff-dir')"><div class="pav"><i data-lucide="users"></i></div><div class="grow"><div class="pn">Staff Directory</div><div class="pm">7 employees · roles &amp; leave</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="go('compliance')"><div class="pav"><i data-lucide="shield-check"></i></div><div class="grow"><div class="pn">Compliance</div><div class="pm">certifications &amp; screening</div></div><span class="stch st-amber">1 due</span></div>
+      <div class="li" onclick="go('staff-dir')"><div class="pav"><i data-lucide="mail"></i></div><div class="grow"><div class="pn">Invitations</div><div class="pm">1 pending · history</div></div><span class="stch st-amber">1</span></div>
+      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
+      <div class="li" onclick="toast('Workforce reports — on web')"><div class="pav"><i data-lucide="bar-chart-3"></i></div><div class="grow"><div class="pn">Workforce reports</div><div class="pm">leave, hours, turnover</div></div><span class="stch st-web">Web</span></div>
     </div></div>
     <div class="nav" id="nav-people"></div>
   </div>
@@ -239,17 +256,14 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
       <div class="h-name" style="font-size:20px">Risk &amp; Incidents</div></div>
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n tred">5</div><div class="l">open</div></div><div class="statbox"><div class="n">0</div><div class="l">high risk</div></div><div class="statbox"><div class="n">--</div><div class="l">avg resolution</div></div></div>
-      <div class="sect">Category breakdown</div>
-      <div class="card">
-        <div class="bar"><span class="bl">Participant behaviour</span><span class="bt"><span class="bf" style="width:100%"></span></span><span class="bn">3</span></div>
-        <div class="bar"><span class="bl">Participant medical</span><span class="bt"><span class="bf" style="width:100%"></span></span><span class="bn">3</span></div>
-        <div class="bar"><span class="bl">Safeguarding</span><span class="bt"><span class="bf" style="width:66%"></span></span><span class="bn">2</span></div>
-        <div class="bar"><span class="bl">Environment</span><span class="bt"><span class="bf" style="width:33%"></span></span><span class="bn">1</span></div>
-        <div class="bar"><span class="bl">WHS</span><span class="bt"><span class="bf" style="width:33%"></span></span><span class="bn">1</span></div>
-      </div>
-      <div class="sect">Open incidents <a onclick="go('approvals')">Review</a></div>
+      <div class="sect">Record · capture &amp; create</div>
+      <div class="li" onclick="toast('Report Incident — 7-step guided wizard')"><div class="pav" style="background:var(--red-l);color:var(--red)"><i data-lucide="circle-plus"></i></div><div class="grow"><div class="pn">Report Incident</div><div class="pm">7-step guided wizard</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="sect" style="margin-top:8px">Manage · open incidents</div>
       <div class="li"><div class="pav" style="background:var(--red-l);color:var(--red)"><i data-lucide="triangle-alert"></i></div><div class="grow"><div class="pn">Minor fall — Emily Turner</div><div class="pm">22 Jun · Medium · under review</div></div><span class="stch st-red">Open</span></div>
       <div class="li"><div class="pav" style="background:var(--amber-l);color:var(--amber)"><i data-lucide="activity"></i></div><div class="grow"><div class="pn">Behaviour — Jacob Lee</div><div class="pm">21 Jun · Low · investigating</div></div><span class="stch st-amber">Open</span></div>
+      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
+      <div class="li" onclick="go('risk-analytics')"><div class="pav"><i data-lucide="chart-column"></i></div><div class="grow"><div class="pn">Risk Analytics</div><div class="pm">trends, categories, resolution</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="toast('Export incident report — CSV, on web')"><div class="pav"><i data-lucide="download"></i></div><div class="grow"><div class="pn">Export Incident Report</div><div class="pm">spreadsheet (CSV)</div></div><span class="stch st-web">Web</span></div>
     </div></div>
     <div class="nav" id="nav-risk"></div>
   </div>
@@ -340,6 +354,146 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
       <div class="li" style="color:var(--red)" onclick="toast('Signed out')"><div class="pav" style="background:var(--red-l);color:var(--red)"><i data-lucide="log-out"></i></div><div class="grow"><div class="pn" style="color:var(--red)">Sign out</div></div></div>
     </div></div>
     <div class="nav" id="nav-more"></div>
+  </div>
+
+  <!-- PARTICIPANT PROFILE -->
+  <div class="screen" id="a-profile">
+    <div class="gh" style="padding-bottom:14px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="topbar" style="padding:0 0 10px;color:#fff"><span class="back" style="color:#fff" onclick="go('m-part')"><i data-lucide="chevron-left"></i> Back</span><span class="back" style="color:#fff" onclick="toast('Edit on the web app')">Edit</span></div>
+      <div class="row" style="display:flex;align-items:center;gap:13px"><div class="av" style="width:50px;height:50px">ET</div><div><div class="h-name" style="font-size:19px">Emily Turner</div><div class="h-greet">NDIS •••• 0001 · Active</div></div></div></div>
+    <div class="scroll"><div class="body">
+      <div class="attn" style="background:var(--red-l);border-color:#f7c5c5"><div class="at" style="color:var(--red)"><i data-lucide="triangle-alert"></i> Risk flags</div><div style="font-size:12.5px;color:#7f1d1d;margin-top:6px">Falls risk · Epilepsy — see Safety Plan · Nut allergy · No safety plan on file</div></div>
+      <div class="card"><div class="sect" style="margin:0 0 6px">Quick info</div><div class="kv"><span class="k">Date of birth</span><span class="v">13/07/1991</span></div><div class="kv"><span class="k">Living</span><span class="v">SIL — 12 Maple Street</span></div><div class="kv"><span class="k">Key contact</span><span class="v">☎ Guardian</span></div></div>
+      <div class="card"><div class="sect" style="margin:0 0 6px">Medications</div><div class="kv"><span class="k">Morning</span><span class="v">Levetiracetam 500mg</span></div><div class="kv"><span class="k">Evening</span><span class="v">Levetiracetam 500mg</span></div></div>
+      <div class="card"><div class="sect" style="margin:0 0 6px">Active NDIS plan</div><div class="kv"><span class="k">Funding</span><span class="v">$435,243</span></div><div class="kv"><span class="k">Expires</span><span class="v">01/12/2026</span></div></div>
+      <div class="li" onclick="toast('Full profile — 11 tabs — on the web app')"><div class="pav"><i data-lucide="folder-open"></i></div><div class="grow"><div class="pn">Documents, Goals, Daily Living…</div><div class="pm">11 profile tabs</div></div><span class="stch st-web">Web</span></div>
+    </div></div>
+  </div>
+
+  <!-- SITE DETAIL -->
+  <div class="screen" id="site-detail">
+    <div class="gh" style="padding-bottom:14px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="topbar" style="padding:0 0 10px;color:#fff"><span class="back" style="color:#fff" onclick="go('m-part')"><i data-lucide="chevron-left"></i> Back</span><span class="back" style="color:#fff" onclick="toast('Edit location on web')">Edit</span></div>
+      <div class="h-name" style="font-size:20px">12 Maple Street</div><div class="h-greet">SIL site · Riverside</div></div>
+    <div class="scroll"><div class="body">
+      <div class="statline"><div class="statbox"><div class="n">3</div><div class="l">participants</div></div><div class="statbox"><div class="n">2</div><div class="l">staff</div></div><div class="statbox"><div class="n">3/4</div><div class="l">capacity</div></div></div>
+      <div class="sect">Message board</div>
+      <div class="card"><div class="row" style="display:flex;align-items:center;gap:10px"><div class="pav" style="font-size:13px">MR</div><div><div class="pn" style="font-size:13px">Maria Reyes</div><div class="pm">2h ago</div></div></div><div style="font-size:13px;margin-top:9px;color:#334155">Emily's GP appt moved to Thursday 2pm — please note for next shift.</div></div>
+      <div class="li" onclick="go('thread')"><div class="pav"><i data-lucide="message-square"></i></div><div class="grow"><div class="pn">Live chat</div><div class="pm">site team conversation</div></div><span class="stch st-blue">1</span></div>
+      <div class="sect" style="margin-top:8px">Schedule</div>
+      <div class="li"><div class="pav"><i data-lucide="calendar"></i></div><div class="grow"><div class="pn">Today · Alex Carter</div><div class="pm">10:00–14:00 · personal care</div></div></div>
+      <div class="sect" style="margin-top:8px">To-do's</div>
+      <div class="li"><div class="pav"><i data-lucide="circle-check"></i></div><div class="grow"><div class="pn">Order supplies</div><div class="pm">due tomorrow</div></div></div>
+    </div></div>
+  </div>
+
+  <!-- SHIFT REPORT REGISTER -->
+  <div class="screen" id="shift-register">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div class="topbar"><span class="back" onclick="go('m-part')"><i data-lucide="chevron-left"></i> Back</span><div class="ttl" style="font-size:15px">Shift Report Register</div><i data-lucide="filter" style="color:var(--blue)"></i></div>
+    <div class="scroll"><div class="body">
+      <div class="seg"><div class="on">Formatted</div><div>Worker capture</div></div>
+      <div class="pm" style="margin:0 2px 12px">Last 30 days · all participants · read-only</div>
+      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">JL</div><div class="grow"><div class="pn">Jacob Lee</div><div class="pm">Yesterday · Alex Carter · 9:00–13:00</div></div><span class="stch st-green">Done</span></div>
+      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">SA</div><div class="grow"><div class="pn">Sophie Adams</div><div class="pm">22 Jun · Sam Mills · 14:00–18:00</div></div><span class="stch st-green">Done</span></div>
+      <div class="li"><div class="pav" style="background:var(--amber-l);color:var(--amber)">ET</div><div class="grow"><div class="pn">Emily Turner</div><div class="pm">Today · Alex Carter · 10:00–14:00</div></div><span class="stch st-amber">Draft</span></div>
+      <div class="li" onclick="toast('Export CSV — on web')"><div class="pav"><i data-lucide="download"></i></div><div class="grow"><div class="pn">Export register (CSV)</div></div><span class="stch st-web">Web</span></div>
+    </div></div>
+  </div>
+
+  <!-- AI BRIEFINGS -->
+  <div class="screen" id="ai-brief">
+    <div class="gh" style="padding-bottom:14px;background:linear-gradient(155deg,#7A3FF0,#4922a8)"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="topbar" style="padding:0 0 10px;color:#fff"><span class="back" style="color:#fff" onclick="go('m-part')"><i data-lucide="chevron-left"></i> Back</span></div>
+      <div class="h-name" style="font-size:20px"><i data-lucide="sparkles" style="width:18px;height:18px"></i> AI Participant Briefings</div><div class="h-greet">Auto-generated from shift data</div></div>
+    <div class="scroll"><div class="body">
+      <div class="card"><div class="row" style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div class="pav" style="background:#F1ECFF;color:var(--purple)">ET</div><div class="pn">Emily Turner</div></div><div style="font-size:13px;color:#475569;line-height:1.55">Generally settled this week; morning medication consistent. One minor fall on 22 Jun (under review). Engaged well in garden activities. <b>Watch:</b> mobility after the fall.</div></div>
+      <div class="card"><div class="row" style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div class="pav" style="background:#F1ECFF;color:var(--purple)">JL</div><div class="pn">Jacob Lee</div></div><div style="font-size:13px;color:#475569;line-height:1.55">Positive week, meeting community-access goal. One low-level behaviour incident on 21 Jun. No medication issues.</div></div>
+      <div class="pm" style="text-align:center;margin-top:6px">✨ Updates automatically as shift reports come in</div>
+    </div></div>
+  </div>
+
+  <!-- ROSTER CALENDAR -->
+  <div class="screen" id="roster-cal">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div class="topbar"><span class="back" onclick="go('m-rost')"><i data-lucide="chevron-left"></i> Back</span><div class="ttl" style="font-size:15px">Roster Calendar</div><span style="width:24px"></span></div>
+    <div class="scroll"><div class="body">
+      <div class="sect" style="margin-top:0">22 Jun – 5 Jul · fortnight</div>
+      <div class="cal">
+        <div class="hd">M</div><div class="hd">T</div><div class="hd">W</div><div class="hd">T</div><div class="hd">F</div><div class="hd">S</div><div class="hd">S</div>
+        <div class="d"><span class="dn">22</span></div><div class="d"><span class="dn">23</span></div><div class="d has"><span class="dn">24</span><span class="sh">2</span></div><div class="d"><span class="dn">25</span></div><div class="d has"><span class="dn">26</span><span class="sh">1</span></div><div class="d"><span class="dn">27</span></div><div class="d"><span class="dn">28</span></div>
+        <div class="d"><span class="dn">29</span></div><div class="d"><span class="dn">30</span></div><div class="d"><span class="dn">1</span></div><div class="d has"><span class="dn">2</span><span class="sh">1</span></div><div class="d"><span class="dn">3</span></div><div class="d"><span class="dn">4</span></div><div class="d"><span class="dn">5</span></div>
+      </div>
+      <div class="sect">Today's shifts</div>
+      <div class="li"><div class="pav">AC</div><div class="grow"><div class="pn">Alex Carter</div><div class="pm">12 Maple St · 10:00–14:00</div></div><span class="stch st-green">Active</span></div>
+      <div class="li"><div class="pav">SM</div><div class="grow"><div class="pn">Sam Mills</div><div class="pm">8 River Rd · 14:00–18:00</div></div><span class="stch st-blue">Upcoming</span></div>
+      <div class="li" onclick="toast('Build / edit roster on the web app')"><div class="pav"><i data-lucide="square-pen"></i></div><div class="grow"><div class="pn">Build / edit roster</div></div><span class="stch st-web">Web</span></div>
+    </div></div>
+  </div>
+
+  <!-- CLAIMS PIPELINE -->
+  <div class="screen" id="claims">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div class="topbar"><span class="back" onclick="go('m-fin')"><i data-lucide="chevron-left"></i> Back</span><div class="ttl" style="font-size:15px">Claims Pipeline</div><span style="width:24px"></span></div>
+    <div class="scroll"><div class="body">
+      <div class="statline"><div class="statbox"><div class="n">$0</div><div class="l">pending</div></div><div class="statbox"><div class="n">0</div><div class="l">claim lines</div></div><div class="statbox"><div class="n">0%</div><div class="l">success</div></div></div>
+      <div class="card" style="text-align:center;padding:26px;color:var(--mut)"><i data-lucide="receipt" style="width:30px;height:30px;color:#cbd5e1"></i><div style="margin-top:10px;font-size:13px">No claims in the pipeline</div><div class="pm">Claim lines appear here as services are delivered &amp; documented</div></div>
+      <div class="li" onclick="toast('Batch & submit claims on the web app')"><div class="pav"><i data-lucide="send"></i></div><div class="grow"><div class="pn">Batch &amp; submit claims</div></div><span class="stch st-web">Web</span></div>
+    </div></div>
+  </div>
+
+  <!-- STAFF DIRECTORY -->
+  <div class="screen" id="staff-dir">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div class="topbar"><span class="back" onclick="go('m-people')"><i data-lucide="chevron-left"></i> Back</span><div class="ttl" style="font-size:15px">Staff Directory</div><i data-lucide="user-plus" style="color:var(--blue)" onclick="toast('Invite user')"></i></div>
+    <div class="scroll"><div class="body">
+      <div class="pm" style="margin:0 2px 12px">7 employees</div>
+      <div class="li"><div class="pav">AC</div><div class="grow"><div class="pn">Alex Carter</div><div class="pm">Support Worker · 0 days leave</div></div><span class="stch st-green">Active</span></div>
+      <div class="li"><div class="pav">MR</div><div class="grow"><div class="pn">Maria Reyes</div><div class="pm">Team Leader · 4 days leave</div></div><span class="stch st-green">Active</span></div>
+      <div class="li"><div class="pav">SM</div><div class="grow"><div class="pn">Sam Mills</div><div class="pm">Support Worker · 2 days leave</div></div><span class="stch st-amber">Cert due</span></div>
+      <div class="li"><div class="pav">RS</div><div class="grow"><div class="pn">Riley Stone</div><div class="pm">Finance · 1 day leave</div></div><span class="stch st-green">Active</span></div>
+      <div class="li"><div class="pav">DW</div><div class="grow"><div class="pn">Dana Wood</div><div class="pm">Executive · 0 days leave</div></div><span class="stch st-green">Active</span></div>
+      <div class="li"><div class="pav">CB</div><div class="grow"><div class="pn">Chris Bell</div><div class="pm">Team Leader · 6 days leave</div></div><span class="stch st-green">Active</span></div>
+      <div class="li"><div class="pav">AD</div><div class="grow"><div class="pn">Admin</div><div class="pm">Administrator</div></div><span class="stch st-green">Active</span></div>
+      <div class="sect" style="margin-top:8px">Invitations</div>
+      <div class="li"><div class="pav"><i data-lucide="mail"></i></div><div class="grow"><div class="pn">new.worker@example.com</div><div class="pm">Support Worker · sent 16 Jun</div></div><span class="stch st-amber">Pending</span></div>
+    </div></div>
+  </div>
+
+  <!-- COMPLIANCE -->
+  <div class="screen" id="compliance">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div class="topbar"><span class="back" onclick="go('m-people')"><i data-lucide="chevron-left"></i> Back</span><div class="ttl" style="font-size:15px">Compliance</div><span style="width:24px"></span></div>
+    <div class="scroll"><div class="body">
+      <div class="statline"><div class="statbox"><div class="n tgreen">6</div><div class="l">current</div></div><div class="statbox"><div class="n tamber">1</div><div class="l">due soon</div></div><div class="statbox"><div class="n">0</div><div class="l">expired</div></div></div>
+      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44"><i data-lucide="shield-check"></i></div><div class="grow"><div class="pn">NDIS Worker Screening</div><div class="pm">All staff · valid</div></div><span class="stch st-green">Current</span></div>
+      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44"><i data-lucide="heart-pulse"></i></div><div class="grow"><div class="pn">First Aid &amp; CPR</div><div class="pm">6 of 7 staff current</div></div><span class="stch st-green">Current</span></div>
+      <div class="li"><div class="pav" style="background:var(--amber-l);color:var(--amber)"><i data-lucide="graduation-cap"></i></div><div class="grow"><div class="pn">Manual Handling — Sam Mills</div><div class="pm">expires 18 Jul 2026</div></div><span class="stch st-amber">Due soon</span></div>
+    </div></div>
+  </div>
+
+  <!-- RISK ANALYTICS -->
+  <div class="screen" id="risk-analytics">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div class="topbar"><span class="back" onclick="go('m-risk')"><i data-lucide="chevron-left"></i> Back</span><div class="ttl" style="font-size:15px">Risk Analytics</div><span style="width:24px"></span></div>
+    <div class="scroll"><div class="body">
+      <div class="statline"><div class="statbox"><div class="n tred">5</div><div class="l">open</div></div><div class="statbox"><div class="n">0</div><div class="l">high risk</div></div><div class="statbox"><div class="n">--</div><div class="l">avg days</div></div></div>
+      <div class="sect">Monthly trend</div>
+      <div class="card">
+        <div class="bar"><span class="bl">March</span><span class="bt"><span class="bf" style="width:0%"></span></span><span class="bn">0</span></div>
+        <div class="bar"><span class="bl">April</span><span class="bt"><span class="bf" style="width:33%"></span></span><span class="bn">1</span></div>
+        <div class="bar"><span class="bl">May</span><span class="bt"><span class="bf" style="width:66%"></span></span><span class="bn">2</span></div>
+        <div class="bar"><span class="bl">June</span><span class="bt"><span class="bf" style="width:100%"></span></span><span class="bn">3</span></div>
+      </div>
+      <div class="sect">Category breakdown</div>
+      <div class="card">
+        <div class="bar"><span class="bl">Participant behaviour</span><span class="bt"><span class="bf" style="width:100%"></span></span><span class="bn">3</span></div>
+        <div class="bar"><span class="bl">Participant medical</span><span class="bt"><span class="bf" style="width:100%"></span></span><span class="bn">3</span></div>
+        <div class="bar"><span class="bl">Safeguarding</span><span class="bt"><span class="bf" style="width:66%"></span></span><span class="bn">2</span></div>
+        <div class="bar"><span class="bl">Environment</span><span class="bt"><span class="bf" style="width:33%"></span></span><span class="bn">1</span></div>
+        <div class="bar"><span class="bl">WHS</span><span class="bt"><span class="bf" style="width:33%"></span></span><span class="bn">1</span></div>
+      </div>
+    </div></div>
   </div>
 
   <div class="toast" id="toast" style="position:absolute;bottom:90px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;font-size:12px;padding:10px 16px;border-radius:30px;opacity:0;transition:.3s;pointer-events:none;z-index:9;"></div>
