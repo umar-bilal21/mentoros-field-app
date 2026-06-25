@@ -58,6 +58,19 @@ body.embed .screenwrap{height:100%;border-radius:0;}
 .cal .d{aspect-ratio:1;border-radius:9px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;}
 .cal .d .dn{font-weight:700;}.cal .d.has{background:var(--blue-l);border-color:#c9d6ff;}.cal .d .sh{font-size:8px;color:var(--blue);font-weight:700;}
 .cal .hd{font-size:9px;color:var(--mut);text-align:center;font-weight:700;}
+/* grouped list (iOS-style) — cleaner than separate cards */
+.group{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 5px rgba(16,23,42,.05);}
+.gi{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #f1f3f8;cursor:pointer;}
+.gi:last-child{border-bottom:none;}
+.gi:active{background:var(--blue-l);}
+.gic{width:32px;height:32px;border-radius:9px;background:var(--blue-l);color:var(--blue);display:flex;align-items:center;justify-content:center;flex:none;font-size:12px;font-weight:700;}
+.gic svg.lucide{width:16px;height:16px;}
+.gic.red{background:var(--red-l);color:var(--red);}.gic.green{background:var(--green-l);color:#0a7d44;}.gic.amber{background:var(--amber-l);color:var(--amber);}.gic.purple{background:#F1ECFF;color:var(--purple);}
+.gt{font-size:13.5px;font-weight:600;color:var(--ink);}
+.gi .pm{font-size:11px;margin-top:1px;}
+.trail{color:#cbd5e1;width:16px;height:16px;flex:none;}
+.sect{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:2px 4px 9px;}
+.sect .sub2{font-weight:500;text-transform:none;letter-spacing:0;color:#aab2c0;}
 /* stats */
 .statline{display:flex;gap:10px;margin-bottom:14px;}
 .statbox{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;}
@@ -174,18 +187,24 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n">8</div><div class="l">participants</div></div><div class="statbox"><div class="n">26</div><div class="l">sites</div></div><div class="statbox"><div class="n">1</div><div class="l">onboarding</div></div></div>
       <div class="attn"><div class="at"><i data-lucide="triangle-alert"></i> Needs attention</div><div style="font-size:12.5px;color:#7a4a09;margin-top:6px">8 participants have no Safety Plan · 8 with no recent shift report</div></div>
-      <div class="sect">Record · capture &amp; create</div>
-      <div class="li" onclick="toast('12-step onboarding — best on the web app')"><div class="pav"><i data-lucide="user-plus"></i></div><div class="grow"><div class="pn">New participant onboarding</div><div class="pm">12-step intake · 1 in progress</div></div><span class="stch st-web">Web</span></div>
-      <div class="li" onclick="toast('Add a site — on the web app')"><div class="pav"><i data-lucide="map-pin"></i></div><div class="grow"><div class="pn">Add site / location</div></div><span class="stch st-web">Web</span></div>
-      <div class="sect" style="margin-top:8px">Manage · view &amp; organise</div>
-      <div class="li" onclick="go('a-profile')"><div class="pav">ET</div><div class="grow"><div class="pn">Emily Turner</div><div class="pm">NDIS •••• 0001 · 12 Maple Street</div></div><span class="stch st-red">No safety plan</span></div>
-      <div class="li" onclick="go('a-profile')"><div class="pav">JL</div><div class="grow"><div class="pn">Jacob Lee</div><div class="pm">NDIS •••• 0002 · 8 River Road</div></div><span class="stch st-green">Active</span></div>
-      <div class="li" onclick="go('a-profile')"><div class="pav">SA</div><div class="grow"><div class="pn">Sophie Adams</div><div class="pm">NDIS •••• 0003 · 30 Oak Avenue</div></div><span class="stch st-amber">No report 7d</span></div>
-      <div class="li" onclick="go('site-detail')"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">Sites &amp; locations</div><div class="pm">26 SIL homes · capacity &amp; staff</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
-      <div class="li" onclick="go('shift-register')"><div class="pav"><i data-lucide="file-text"></i></div><div class="grow"><div class="pn">Shift Report Register</div><div class="pm">org-wide shift reports</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="go('ai-brief')"><div class="pav" style="background:#F1ECFF;color:var(--purple)"><i data-lucide="sparkles"></i></div><div class="grow"><div class="pn">AI Participant Briefings</div><div class="pm">summaries from shift data</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="toast('0 pending suggestions')"><div class="pav" style="background:#F1ECFF;color:var(--purple)"><i data-lucide="wand-sparkles"></i></div><div class="grow"><div class="pn">Profile Suggestions Queue</div><div class="pm">AI care-plan updates · 0 pending</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="sect">Record <span class="sub2">· capture &amp; create</span></div>
+      <div class="group">
+        <div class="gi" onclick="toast('12-step onboarding — best on the web app')"><div class="gic"><i data-lucide="user-plus"></i></div><div class="grow"><div class="gt">New participant onboarding</div><div class="pm">12-step intake · 1 in progress</div></div><span class="stch st-web">Web</span></div>
+        <div class="gi" onclick="toast('Add a site — on the web app')"><div class="gic"><i data-lucide="map-pin"></i></div><div class="grow"><div class="gt">Add site / location</div></div><span class="stch st-web">Web</span></div>
+      </div>
+      <div class="sect">Manage <span class="sub2">· view &amp; organise</span></div>
+      <div class="group">
+        <div class="gi" onclick="go('a-profile')"><div class="gic">ET</div><div class="grow"><div class="gt">Emily Turner</div><div class="pm">NDIS •••• 0001 · 12 Maple Street</div></div><span class="stch st-red">No safety plan</span></div>
+        <div class="gi" onclick="go('a-profile')"><div class="gic">JL</div><div class="grow"><div class="gt">Jacob Lee</div><div class="pm">NDIS •••• 0002 · 8 River Road</div></div><span class="stch st-green">Active</span></div>
+        <div class="gi" onclick="go('a-profile')"><div class="gic">SA</div><div class="grow"><div class="gt">Sophie Adams</div><div class="pm">NDIS •••• 0003 · 30 Oak Avenue</div></div><span class="stch st-amber">No report</span></div>
+        <div class="gi" onclick="go('site-detail')"><div class="gic"><i data-lucide="home"></i></div><div class="grow"><div class="gt">Sites &amp; locations</div><div class="pm">26 SIL homes</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+      </div>
+      <div class="sect">Insights <span class="sub2">· reports &amp; intelligence</span></div>
+      <div class="group">
+        <div class="gi" onclick="go('shift-register')"><div class="gic"><i data-lucide="file-text"></i></div><div class="grow"><div class="gt">Shift Report Register</div><div class="pm">org-wide shift reports</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="go('ai-brief')"><div class="gic purple"><i data-lucide="sparkles"></i></div><div class="grow"><div class="gt">AI Participant Briefings</div><div class="pm">summaries from shift data</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="toast('0 pending suggestions')"><div class="gic purple"><i data-lucide="wand-sparkles"></i></div><div class="grow"><div class="gt">Profile Suggestions Queue</div><div class="pm">AI care-plan updates · 0 pending</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+      </div>
     </div></div>
     <div class="nav" id="nav-part"></div>
   </div>
@@ -197,15 +216,21 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
       <div class="h-name" style="font-size:20px">Rostering &amp; Service</div></div>
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n tred">0%</div><div class="l">roster coverage</div></div><div class="statbox"><div class="n tamber">0%</div><div class="l">report completion</div></div></div>
-      <div class="sect">Record · capture &amp; create</div>
-      <div class="li" onclick="toast('New shift — build on the web roster')"><div class="pav"><i data-lucide="calendar-plus"></i></div><div class="grow"><div class="pn">New shift</div></div><span class="stch st-web">Web</span></div>
-      <div class="li" onclick="toast('Add leave request')"><div class="pav"><i data-lucide="plane"></i></div><div class="grow"><div class="pn">Leave request</div></div><span class="stch st-web">Web</span></div>
-      <div class="sect" style="margin-top:8px">Manage · view &amp; organise</div>
-      <div class="li" onclick="go('roster-cal')"><div class="pav"><i data-lucide="calendar-days"></i></div><div class="grow"><div class="pn">Roster Calendar</div><div class="pm">fortnightly employee schedule</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="go('approvals')"><div class="pav"><i data-lucide="check-check"></i></div><div class="grow"><div class="pn">Timesheet Approval</div><div class="pm">approve before payroll</div></div><span class="stch st-amber">2</span></div>
-      <div class="li" onclick="toast('Payroll export — Employment Hero CSV, on web')"><div class="pav"><i data-lucide="file-spreadsheet"></i></div><div class="grow"><div class="pn">Payroll Export</div><div class="pm">Employment Hero CSV</div></div><span class="stch st-web">Web</span></div>
-      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
-      <div class="li" onclick="go('shift-register')"><div class="pav"><i data-lucide="clipboard-list"></i></div><div class="grow"><div class="pn">Shift Documentation</div><div class="pm">report completion 0%</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="sect">Record <span class="sub2">· capture &amp; create</span></div>
+      <div class="group">
+        <div class="gi" onclick="toast('New shift — build on the web roster')"><div class="gic"><i data-lucide="calendar-plus"></i></div><div class="grow"><div class="gt">New shift</div></div><span class="stch st-web">Web</span></div>
+        <div class="gi" onclick="toast('Add leave request')"><div class="gic"><i data-lucide="plane"></i></div><div class="grow"><div class="gt">Leave request</div></div><span class="stch st-web">Web</span></div>
+      </div>
+      <div class="sect">Manage <span class="sub2">· view &amp; organise</span></div>
+      <div class="group">
+        <div class="gi" onclick="go('roster-cal')"><div class="gic"><i data-lucide="calendar-days"></i></div><div class="grow"><div class="gt">Roster Calendar</div><div class="pm">fortnightly schedule</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="go('approvals')"><div class="gic"><i data-lucide="check-check"></i></div><div class="grow"><div class="gt">Timesheet Approval</div><div class="pm">approve before payroll</div></div><span class="stch st-amber">2</span></div>
+        <div class="gi" onclick="toast('Payroll export — Employment Hero CSV, on web')"><div class="gic"><i data-lucide="file-spreadsheet"></i></div><div class="grow"><div class="gt">Payroll Export</div><div class="pm">Employment Hero CSV</div></div><span class="stch st-web">Web</span></div>
+      </div>
+      <div class="sect">Insights <span class="sub2">· reports &amp; intelligence</span></div>
+      <div class="group">
+        <div class="gi" onclick="go('shift-register')"><div class="gic"><i data-lucide="clipboard-list"></i></div><div class="grow"><div class="gt">Shift Documentation</div><div class="pm">report completion 0%</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+      </div>
     </div></div>
     <div class="nav" id="nav-rost"></div>
   </div>
@@ -218,14 +243,20 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n">$0</div><div class="l">monthly revenue</div></div><div class="statbox"><div class="n">$0</div><div class="l">pending claims</div></div></div>
       <div class="statline"><div class="statbox"><div class="n">$0</div><div class="l">outstanding</div></div><div class="statbox"><div class="n">0%</div><div class="l">claim success</div></div></div>
-      <div class="sect">Record · capture &amp; create</div>
-      <div class="li" onclick="toast('ROC Builder — 22 SIL sites, on the web app')"><div class="pav"><i data-lucide="layout-grid"></i></div><div class="grow"><div class="pn">ROC Builder (SIL)</div><div class="pm">22 sites · roster of care</div></div><span class="stch st-web">Web</span></div>
-      <div class="li" onclick="toast('Create invoice — on web')"><div class="pav"><i data-lucide="file-plus"></i></div><div class="grow"><div class="pn">New invoice</div></div><span class="stch st-web">Web</span></div>
-      <div class="sect" style="margin-top:8px">Manage · view &amp; organise</div>
-      <div class="li" onclick="go('claims')"><div class="pav"><i data-lucide="receipt"></i></div><div class="grow"><div class="pn">Claims Pipeline</div><div class="pm">0 claim lines · approve &amp; submit</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="toast('Claim schedule — upcoming claim runs')"><div class="pav"><i data-lucide="calendar-clock"></i></div><div class="grow"><div class="pn">Claim Schedule</div><div class="pm">upcoming claim runs</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
-      <div class="li" onclick="toast('Funding burn — plan utilisation per participant')"><div class="pav"><i data-lucide="trending-up"></i></div><div class="grow"><div class="pn">Funding Burn</div><div class="pm">plan utilisation</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="sect">Record <span class="sub2">· capture &amp; create</span></div>
+      <div class="group">
+        <div class="gi" onclick="toast('ROC Builder — 22 SIL sites, on the web app')"><div class="gic"><i data-lucide="layout-grid"></i></div><div class="grow"><div class="gt">ROC Builder (SIL)</div><div class="pm">22 sites · roster of care</div></div><span class="stch st-web">Web</span></div>
+        <div class="gi" onclick="toast('Create invoice — on web')"><div class="gic"><i data-lucide="file-plus"></i></div><div class="grow"><div class="gt">New invoice</div></div><span class="stch st-web">Web</span></div>
+      </div>
+      <div class="sect">Manage <span class="sub2">· view &amp; organise</span></div>
+      <div class="group">
+        <div class="gi" onclick="go('claims')"><div class="gic"><i data-lucide="receipt"></i></div><div class="grow"><div class="gt">Claims Pipeline</div><div class="pm">0 claim lines</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="toast('Claim schedule — upcoming claim runs')"><div class="gic"><i data-lucide="calendar-clock"></i></div><div class="grow"><div class="gt">Claim Schedule</div><div class="pm">upcoming claim runs</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+      </div>
+      <div class="sect">Insights <span class="sub2">· reports &amp; intelligence</span></div>
+      <div class="group">
+        <div class="gi" onclick="toast('Funding burn — plan utilisation per participant')"><div class="gic"><i data-lucide="trending-up"></i></div><div class="grow"><div class="gt">Funding Burn</div><div class="pm">plan utilisation</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+      </div>
     </div></div>
     <div class="nav" id="nav-fin"></div>
   </div>
@@ -237,14 +268,20 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
       <div class="h-name" style="font-size:20px">People &amp; Culture</div></div>
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n">7</div><div class="l">staff</div></div><div class="statbox"><div class="n">1</div><div class="l">pending invite</div></div><div class="statbox"><div class="n tgreen">100%</div><div class="l">compliant</div></div></div>
-      <div class="sect">Record · capture &amp; create</div>
-      <div class="li" onclick="toast('Invite sent ✓')"><div class="pav"><i data-lucide="user-plus"></i></div><div class="grow"><div class="pn">Invite user</div><div class="pm">send invitation email</div></div><span class="stch st-blue">Quick</span></div>
-      <div class="sect" style="margin-top:8px">Manage · view &amp; organise</div>
-      <div class="li" onclick="go('staff-dir')"><div class="pav"><i data-lucide="users"></i></div><div class="grow"><div class="pn">Staff Directory</div><div class="pm">7 employees · roles &amp; leave</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="go('compliance')"><div class="pav"><i data-lucide="shield-check"></i></div><div class="grow"><div class="pn">Compliance</div><div class="pm">certifications &amp; screening</div></div><span class="stch st-amber">1 due</span></div>
-      <div class="li" onclick="go('staff-dir')"><div class="pav"><i data-lucide="mail"></i></div><div class="grow"><div class="pn">Invitations</div><div class="pm">1 pending · history</div></div><span class="stch st-amber">1</span></div>
-      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
-      <div class="li" onclick="toast('Workforce reports — on web')"><div class="pav"><i data-lucide="bar-chart-3"></i></div><div class="grow"><div class="pn">Workforce reports</div><div class="pm">leave, hours, turnover</div></div><span class="stch st-web">Web</span></div>
+      <div class="sect">Record <span class="sub2">· capture &amp; create</span></div>
+      <div class="group">
+        <div class="gi" onclick="toast('Invite sent ✓')"><div class="gic"><i data-lucide="user-plus"></i></div><div class="grow"><div class="gt">Invite user</div><div class="pm">send invitation email</div></div><span class="stch st-blue">Quick</span></div>
+      </div>
+      <div class="sect">Manage <span class="sub2">· view &amp; organise</span></div>
+      <div class="group">
+        <div class="gi" onclick="go('staff-dir')"><div class="gic"><i data-lucide="users"></i></div><div class="grow"><div class="gt">Staff Directory</div><div class="pm">7 employees · roles &amp; leave</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="go('compliance')"><div class="gic amber"><i data-lucide="shield-check"></i></div><div class="grow"><div class="gt">Compliance</div><div class="pm">certifications &amp; screening</div></div><span class="stch st-amber">1 due</span></div>
+        <div class="gi" onclick="go('staff-dir')"><div class="gic"><i data-lucide="mail"></i></div><div class="grow"><div class="gt">Invitations</div><div class="pm">1 pending · history</div></div><span class="stch st-amber">1</span></div>
+      </div>
+      <div class="sect">Insights <span class="sub2">· reports &amp; intelligence</span></div>
+      <div class="group">
+        <div class="gi" onclick="toast('Workforce reports — on web')"><div class="gic"><i data-lucide="bar-chart-3"></i></div><div class="grow"><div class="gt">Workforce reports</div><div class="pm">leave, hours, turnover</div></div><span class="stch st-web">Web</span></div>
+      </div>
     </div></div>
     <div class="nav" id="nav-people"></div>
   </div>
@@ -256,14 +293,20 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
       <div class="h-name" style="font-size:20px">Risk &amp; Incidents</div></div>
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n tred">5</div><div class="l">open</div></div><div class="statbox"><div class="n">0</div><div class="l">high risk</div></div><div class="statbox"><div class="n">--</div><div class="l">avg resolution</div></div></div>
-      <div class="sect">Record · capture &amp; create</div>
-      <div class="li" onclick="toast('Report Incident — 7-step guided wizard')"><div class="pav" style="background:var(--red-l);color:var(--red)"><i data-lucide="circle-plus"></i></div><div class="grow"><div class="pn">Report Incident</div><div class="pm">7-step guided wizard</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="sect" style="margin-top:8px">Manage · open incidents</div>
-      <div class="li"><div class="pav" style="background:var(--red-l);color:var(--red)"><i data-lucide="triangle-alert"></i></div><div class="grow"><div class="pn">Minor fall — Emily Turner</div><div class="pm">22 Jun · Medium · under review</div></div><span class="stch st-red">Open</span></div>
-      <div class="li"><div class="pav" style="background:var(--amber-l);color:var(--amber)"><i data-lucide="activity"></i></div><div class="grow"><div class="pn">Behaviour — Jacob Lee</div><div class="pm">21 Jun · Low · investigating</div></div><span class="stch st-amber">Open</span></div>
-      <div class="sect" style="margin-top:8px">Insights · reports &amp; intelligence</div>
-      <div class="li" onclick="go('risk-analytics')"><div class="pav"><i data-lucide="chart-column"></i></div><div class="grow"><div class="pn">Risk Analytics</div><div class="pm">trends, categories, resolution</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="toast('Export incident report — CSV, on web')"><div class="pav"><i data-lucide="download"></i></div><div class="grow"><div class="pn">Export Incident Report</div><div class="pm">spreadsheet (CSV)</div></div><span class="stch st-web">Web</span></div>
+      <div class="sect">Record <span class="sub2">· capture &amp; create</span></div>
+      <div class="group">
+        <div class="gi" onclick="toast('Report Incident — 7-step guided wizard')"><div class="gic red"><i data-lucide="circle-plus"></i></div><div class="grow"><div class="gt">Report Incident</div><div class="pm">7-step guided wizard</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+      </div>
+      <div class="sect">Manage <span class="sub2">· open incidents (5)</span></div>
+      <div class="group">
+        <div class="gi"><div class="gic red"><i data-lucide="triangle-alert"></i></div><div class="grow"><div class="gt">Minor fall — Emily Turner</div><div class="pm">22 Jun · Medium · under review</div></div><span class="stch st-red">Open</span></div>
+        <div class="gi"><div class="gic amber"><i data-lucide="activity"></i></div><div class="grow"><div class="gt">Behaviour — Jacob Lee</div><div class="pm">21 Jun · Low · investigating</div></div><span class="stch st-amber">Open</span></div>
+      </div>
+      <div class="sect">Insights <span class="sub2">· reports &amp; intelligence</span></div>
+      <div class="group">
+        <div class="gi" onclick="go('risk-analytics')"><div class="gic"><i data-lucide="chart-column"></i></div><div class="grow"><div class="gt">Risk Analytics</div><div class="pm">trends, categories, resolution</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="toast('Export incident report — CSV, on web')"><div class="gic"><i data-lucide="download"></i></div><div class="grow"><div class="gt">Export Incident Report</div><div class="pm">spreadsheet (CSV)</div></div><span class="stch st-web">Web</span></div>
+      </div>
     </div></div>
     <div class="nav" id="nav-risk"></div>
   </div>
@@ -344,14 +387,18 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
     <div class="gh" style="padding-bottom:18px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div><div class="ghrow"><div class="row" style="display:flex;align-items:center;gap:12px"><div class="av">AD</div><div><div class="h-name" style="font-size:18px">Admin</div><div class="h-greet">Administrator · AMS</div></div></div></div></div>
     <div class="scroll"><div class="body">
       <div class="sect">All modules</div>
-      <div class="li" onclick="go('m-part')"><div class="pav"><i data-lucide="users"></i></div><div class="grow"><div class="pn">Participants &amp; Sites</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="go('m-rost')"><div class="pav"><i data-lucide="calendar"></i></div><div class="grow"><div class="pn">Rostering &amp; Service</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="go('m-fin')"><div class="pav"><i data-lucide="dollar-sign"></i></div><div class="grow"><div class="pn">Finance &amp; Claims</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="go('m-people')"><div class="pav"><i data-lucide="contact"></i></div><div class="grow"><div class="pn">People &amp; Culture</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" onclick="go('m-risk')"><div class="pav"><i data-lucide="triangle-alert"></i></div><div class="grow"><div class="pn">Risk &amp; Incidents</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="sect" style="margin-top:8px">Account</div>
-      <div class="li"><div class="pav"><i data-lucide="settings"></i></div><div class="grow"><div class="pn">Settings</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
-      <div class="li" style="color:var(--red)" onclick="toast('Signed out')"><div class="pav" style="background:var(--red-l);color:var(--red)"><i data-lucide="log-out"></i></div><div class="grow"><div class="pn" style="color:var(--red)">Sign out</div></div></div>
+      <div class="group">
+        <div class="gi" onclick="go('m-part')"><div class="gic"><i data-lucide="users"></i></div><div class="grow"><div class="gt">Participants &amp; Sites</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="go('m-rost')"><div class="gic"><i data-lucide="calendar"></i></div><div class="grow"><div class="gt">Rostering &amp; Service</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="go('m-fin')"><div class="gic"><i data-lucide="dollar-sign"></i></div><div class="grow"><div class="gt">Finance &amp; Claims</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="go('m-people')"><div class="gic"><i data-lucide="contact"></i></div><div class="grow"><div class="gt">People &amp; Culture</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="go('m-risk')"><div class="gic red"><i data-lucide="triangle-alert"></i></div><div class="grow"><div class="gt">Risk &amp; Incidents</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+      </div>
+      <div class="sect">Account</div>
+      <div class="group">
+        <div class="gi"><div class="gic"><i data-lucide="settings"></i></div><div class="grow"><div class="gt">Settings</div></div><i data-lucide="chevron-right" class="trail"></i></div>
+        <div class="gi" onclick="toast('Signed out')"><div class="gic red"><i data-lucide="log-out"></i></div><div class="grow"><div class="gt" style="color:var(--red)">Sign out</div></div></div>
+      </div>
     </div></div>
     <div class="nav" id="nav-more"></div>
   </div>
@@ -394,10 +441,14 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
     <div class="scroll"><div class="body">
       <div class="seg"><div class="on">Formatted</div><div>Worker capture</div></div>
       <div class="pm" style="margin:0 2px 12px">Last 30 days · all participants · read-only</div>
-      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">JL</div><div class="grow"><div class="pn">Jacob Lee</div><div class="pm">Yesterday · Alex Carter · 9:00–13:00</div></div><span class="stch st-green">Done</span></div>
-      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44">SA</div><div class="grow"><div class="pn">Sophie Adams</div><div class="pm">22 Jun · Sam Mills · 14:00–18:00</div></div><span class="stch st-green">Done</span></div>
-      <div class="li"><div class="pav" style="background:var(--amber-l);color:var(--amber)">ET</div><div class="grow"><div class="pn">Emily Turner</div><div class="pm">Today · Alex Carter · 10:00–14:00</div></div><span class="stch st-amber">Draft</span></div>
-      <div class="li" onclick="toast('Export CSV — on web')"><div class="pav"><i data-lucide="download"></i></div><div class="grow"><div class="pn">Export register (CSV)</div></div><span class="stch st-web">Web</span></div>
+      <div class="group">
+        <div class="gi"><div class="gic green">JL</div><div class="grow"><div class="gt">Jacob Lee</div><div class="pm">Yesterday · Alex Carter · 9:00–13:00</div></div><span class="stch st-green">Done</span></div>
+        <div class="gi"><div class="gic green">SA</div><div class="grow"><div class="gt">Sophie Adams</div><div class="pm">22 Jun · Sam Mills · 14:00–18:00</div></div><span class="stch st-green">Done</span></div>
+        <div class="gi"><div class="gic amber">ET</div><div class="grow"><div class="gt">Emily Turner</div><div class="pm">Today · Alex Carter · 10:00–14:00</div></div><span class="stch st-amber">Draft</span></div>
+      </div>
+      <div class="group">
+        <div class="gi" onclick="toast('Export CSV — on web')"><div class="gic"><i data-lucide="download"></i></div><div class="grow"><div class="gt">Export register (CSV)</div></div><span class="stch st-web">Web</span></div>
+      </div>
     </div></div>
   </div>
 
@@ -447,16 +498,20 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
     <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
     <div class="topbar"><span class="back" onclick="go('m-people')"><i data-lucide="chevron-left"></i> Back</span><div class="ttl" style="font-size:15px">Staff Directory</div><i data-lucide="user-plus" style="color:var(--blue)" onclick="toast('Invite user')"></i></div>
     <div class="scroll"><div class="body">
-      <div class="pm" style="margin:0 2px 12px">7 employees</div>
-      <div class="li"><div class="pav">AC</div><div class="grow"><div class="pn">Alex Carter</div><div class="pm">Support Worker · 0 days leave</div></div><span class="stch st-green">Active</span></div>
-      <div class="li"><div class="pav">MR</div><div class="grow"><div class="pn">Maria Reyes</div><div class="pm">Team Leader · 4 days leave</div></div><span class="stch st-green">Active</span></div>
-      <div class="li"><div class="pav">SM</div><div class="grow"><div class="pn">Sam Mills</div><div class="pm">Support Worker · 2 days leave</div></div><span class="stch st-amber">Cert due</span></div>
-      <div class="li"><div class="pav">RS</div><div class="grow"><div class="pn">Riley Stone</div><div class="pm">Finance · 1 day leave</div></div><span class="stch st-green">Active</span></div>
-      <div class="li"><div class="pav">DW</div><div class="grow"><div class="pn">Dana Wood</div><div class="pm">Executive · 0 days leave</div></div><span class="stch st-green">Active</span></div>
-      <div class="li"><div class="pav">CB</div><div class="grow"><div class="pn">Chris Bell</div><div class="pm">Team Leader · 6 days leave</div></div><span class="stch st-green">Active</span></div>
-      <div class="li"><div class="pav">AD</div><div class="grow"><div class="pn">Admin</div><div class="pm">Administrator</div></div><span class="stch st-green">Active</span></div>
-      <div class="sect" style="margin-top:8px">Invitations</div>
-      <div class="li"><div class="pav"><i data-lucide="mail"></i></div><div class="grow"><div class="pn">new.worker@example.com</div><div class="pm">Support Worker · sent 16 Jun</div></div><span class="stch st-amber">Pending</span></div>
+      <div class="sect">7 employees</div>
+      <div class="group">
+        <div class="gi"><div class="gic">AC</div><div class="grow"><div class="gt">Alex Carter</div><div class="pm">Support Worker · 0 days leave</div></div><span class="stch st-green">Active</span></div>
+        <div class="gi"><div class="gic">MR</div><div class="grow"><div class="gt">Maria Reyes</div><div class="pm">Team Leader · 4 days leave</div></div><span class="stch st-green">Active</span></div>
+        <div class="gi"><div class="gic">SM</div><div class="grow"><div class="gt">Sam Mills</div><div class="pm">Support Worker · 2 days leave</div></div><span class="stch st-amber">Cert due</span></div>
+        <div class="gi"><div class="gic">RS</div><div class="grow"><div class="gt">Riley Stone</div><div class="pm">Finance · 1 day leave</div></div><span class="stch st-green">Active</span></div>
+        <div class="gi"><div class="gic">DW</div><div class="grow"><div class="gt">Dana Wood</div><div class="pm">Executive · 0 days leave</div></div><span class="stch st-green">Active</span></div>
+        <div class="gi"><div class="gic">CB</div><div class="grow"><div class="gt">Chris Bell</div><div class="pm">Team Leader · 6 days leave</div></div><span class="stch st-green">Active</span></div>
+        <div class="gi"><div class="gic">AD</div><div class="grow"><div class="gt">Admin</div><div class="pm">Administrator</div></div><span class="stch st-green">Active</span></div>
+      </div>
+      <div class="sect">Invitations</div>
+      <div class="group">
+        <div class="gi"><div class="gic"><i data-lucide="mail"></i></div><div class="grow"><div class="gt">new.worker@example.com</div><div class="pm">Support Worker · sent 16 Jun</div></div><span class="stch st-amber">Pending</span></div>
+      </div>
     </div></div>
   </div>
 
@@ -466,9 +521,11 @@ svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none
     <div class="topbar"><span class="back" onclick="go('m-people')"><i data-lucide="chevron-left"></i> Back</span><div class="ttl" style="font-size:15px">Compliance</div><span style="width:24px"></span></div>
     <div class="scroll"><div class="body">
       <div class="statline"><div class="statbox"><div class="n tgreen">6</div><div class="l">current</div></div><div class="statbox"><div class="n tamber">1</div><div class="l">due soon</div></div><div class="statbox"><div class="n">0</div><div class="l">expired</div></div></div>
-      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44"><i data-lucide="shield-check"></i></div><div class="grow"><div class="pn">NDIS Worker Screening</div><div class="pm">All staff · valid</div></div><span class="stch st-green">Current</span></div>
-      <div class="li"><div class="pav" style="background:var(--green-l);color:#0a7d44"><i data-lucide="heart-pulse"></i></div><div class="grow"><div class="pn">First Aid &amp; CPR</div><div class="pm">6 of 7 staff current</div></div><span class="stch st-green">Current</span></div>
-      <div class="li"><div class="pav" style="background:var(--amber-l);color:var(--amber)"><i data-lucide="graduation-cap"></i></div><div class="grow"><div class="pn">Manual Handling — Sam Mills</div><div class="pm">expires 18 Jul 2026</div></div><span class="stch st-amber">Due soon</span></div>
+      <div class="group">
+        <div class="gi"><div class="gic green"><i data-lucide="shield-check"></i></div><div class="grow"><div class="gt">NDIS Worker Screening</div><div class="pm">All staff · valid</div></div><span class="stch st-green">Current</span></div>
+        <div class="gi"><div class="gic green"><i data-lucide="heart-pulse"></i></div><div class="grow"><div class="gt">First Aid &amp; CPR</div><div class="pm">6 of 7 staff current</div></div><span class="stch st-green">Current</span></div>
+        <div class="gi"><div class="gic amber"><i data-lucide="graduation-cap"></i></div><div class="grow"><div class="gt">Manual Handling — Sam Mills</div><div class="pm">expires 18 Jul 2026</div></div><span class="stch st-amber">Due soon</span></div>
+      </div>
     </div></div>
   </div>
 
