@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MentorOS Admin — Mobile Dashboard Prototype</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--blue:#0850FF;--blue-d:#0A3AD0;--blue-l:#EAF0FF;--ink:#0F172A;--mut:#6B7280;--line:#ECEEF4;
+--bg:#F5F7FB;--card:#fff;--green:#16A34A;--green-l:#E7F7EF;--amber:#D97706;--amber-l:#FDF3E5;--red:#DC2626;--red-l:#FDECEC;--purple:#7A3FF0;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',-apple-system,sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:linear-gradient(135deg,#e7ebf3,#d4dbe8);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 16px;color:var(--ink);}
+body.embed{padding:0;background:transparent;min-height:0;height:100vh;display:block;overflow:hidden;}
+body.embed .title,body.embed .hint{display:none;}
+body.embed .phone{width:100%;height:100%;padding:0;border-radius:0;background:transparent;box-shadow:none;}
+body.embed .screenwrap{height:100%;border-radius:0;}
+.title{font-size:18px;font-weight:800;color:#1e293b;margin-bottom:3px;}
+.hint{font-size:12px;color:#5b6678;margin-bottom:20px;}
+.phone{width:340px;height:720px;background:#0b1020;border-radius:42px;padding:11px;box-shadow:0 30px 70px rgba(15,23,42,.4);}
+.screenwrap{width:100%;height:100%;border-radius:32px;overflow:hidden;background:var(--bg);position:relative;}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;}
+.screen.on{display:flex;}
+.sb{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:12px;font-weight:600;flex:none;}
+.scroll{flex:1;overflow-y:auto;}.scroll::-webkit-scrollbar{display:none;}
+.gh{background:linear-gradient(155deg,#0850FF,#0A3AD0);color:#fff;padding:0 20px 20px;border-radius:0 0 26px 26px;flex:none;}
+.gh .sb{color:#fff;}
+.ghrow{display:flex;align-items:center;justify-content:space-between;}
+.av{width:44px;height:44px;border-radius:13px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;}
+.h-greet{font-size:13px;opacity:.85;}.h-name{font-size:21px;font-weight:800;letter-spacing:-.02em;}
+.bell{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
+.bell .dot{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:#FF5A5A;border:2px solid #1340c8;}
+.body{padding:18px;}
+.sect{font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:6px 2px 11px;display:flex;justify-content:space-between;}
+.sect a{color:var(--blue);font-weight:700;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px;box-shadow:0 2px 8px rgba(16,23,42,.04);}
+/* module card */
+.mod{cursor:pointer;}
+.mod:active{transform:scale(.99);}
+.modtop{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.modic{width:42px;height:42px;border-radius:13px;background:var(--blue-l);color:var(--blue);display:flex;align-items:center;justify-content:center;flex:none;}
+.modic svg.lucide{width:22px;height:22px;}
+.modname{font-size:16px;font-weight:700;}
+.modsub{font-size:11.5px;color:var(--mut);}
+.statusrow{display:flex;align-items:center;gap:9px;padding:8px 0;font-size:12.5px;border-top:1px dashed var(--line);}
+.statusrow:first-of-type{border-top:none;}
+.sdot{width:8px;height:8px;border-radius:50%;flex:none;}
+.s-red{background:var(--red);}.s-amber{background:var(--amber);}.s-green{background:var(--green);}
+.sval{font-weight:800;margin-right:2px;}
+.s-red .sval,.tred{color:var(--red);}.s-amber .sval,.tamber{color:var(--amber);}.tgreen{color:var(--green);}
+.chev{margin-left:auto;color:#cbd5e1;}
+/* generic list */
+.li{display:flex;align-items:center;gap:12px;padding:13px;background:#fff;border:1px solid var(--line);border-radius:15px;margin-bottom:10px;cursor:pointer;}
+.li:active{background:var(--blue-l);}
+.pav{width:40px;height:40px;border-radius:12px;background:var(--blue-l);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none;}
+.pn{font-size:14px;font-weight:700;}.pm{font-size:11.5px;color:var(--mut);margin-top:1px;}
+.grow{flex:1;}
+.stch{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.st-amber{background:var(--amber-l);color:var(--amber);}.st-green{background:var(--green-l);color:#0a7d44;}.st-red{background:var(--red-l);color:var(--red);}
+/* stats */
+.statline{display:flex;gap:10px;margin-bottom:14px;}
+.statbox{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;}
+.statbox .n{font-size:18px;font-weight:800;color:var(--blue);}.statbox .l{font-size:10px;color:var(--mut);margin-top:2px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 14px;flex:none;}
+.back{font-size:14px;color:var(--blue);font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;}
+.back svg.lucide{width:15px;height:15px;}
+.ttl{font-size:17px;font-weight:800;}
+.attn{background:var(--amber-l);border:1px solid #f5e2bf;border-radius:14px;padding:13px;margin-bottom:13px;}
+.attn .at{font-size:12px;font-weight:700;color:var(--amber);display:flex;align-items:center;gap:7px;}
+.attn .at svg.lucide{width:15px;height:15px;}
+.btn{display:block;width:100%;border:none;text-align:center;padding:13px;border-radius:13px;font-size:13.5px;font-weight:700;cursor:pointer;}
+.btn-pri{background:linear-gradient(135deg,#0850FF,#0A3AD0);color:#fff;}
+.btn-soft{background:var(--blue-l);color:var(--blue);}
+.btn-sm{padding:8px 16px;border-radius:10px;font-size:12px;width:auto;display:inline-block;}
+.btn-ok{background:var(--green);color:#fff;}.btn-no{background:#fff;border:1px solid var(--line);color:var(--mut);}
+/* bar chart */
+.bar{display:flex;align-items:center;gap:9px;margin-bottom:9px;font-size:12px;}
+.bar .bl{width:120px;color:#334155;}
+.bar .bt{flex:1;height:9px;background:#eef1f6;border-radius:6px;overflow:hidden;display:block;}
+.bar .bf{display:block;height:100%;background:linear-gradient(90deg,#0850FF,#0A3AD0);border-radius:6px;}
+.bar .bn{font-weight:700;width:18px;text-align:right;}
+/* nav */
+.nav{display:flex;background:#fff;border-top:1px solid var(--line);padding:9px 6px 12px;flex:none;}
+.nav div{flex:1;text-align:center;font-size:10px;color:#9aa3b2;font-weight:600;cursor:pointer;}
+.nav div .i{display:block;margin-bottom:3px;}
+.nav div .i svg.lucide{width:20px;height:20px;color:#9aa3b2;}
+.nav div.on{color:var(--blue);}.nav div.on .i svg.lucide{color:var(--blue);}
+.nav .badge{position:absolute;}
+/* chat */
+.chatrow{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer;}
+.chatrow:active{background:var(--blue-l);}
+.unread{margin-left:auto;background:var(--blue);color:#fff;font-size:10px;font-weight:700;min-width:20px;height:20px;border-radius:11px;display:flex;align-items:center;justify-content:center;padding:0 6px;}
+.bubble{max-width:78%;padding:10px 13px;border-radius:15px;font-size:13px;line-height:1.45;margin-bottom:9px;}
+.b-them{background:#fff;border:1px solid var(--line);border-top-left-radius:4px;align-self:flex-start;}
+.b-me{background:var(--blue);color:#fff;border-top-right-radius:4px;align-self:flex-end;}
+.bmeta{font-size:10px;color:var(--mut);margin:0 4px 12px;}
+.bmeta.me{text-align:right;}
+.chatinput{display:flex;gap:9px;align-items:center;padding:12px 16px;background:#fff;border-top:1px solid var(--line);flex:none;}
+.chatinput .f{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:22px;padding:11px 15px;font-size:13px;color:#94a3b8;}
+.chatinput .send{width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;}
+.seg{display:flex;gap:6px;background:#eef1f6;padding:4px;border-radius:13px;margin-bottom:14px;}
+.seg div{flex:1;text-align:center;font-size:12px;font-weight:600;padding:8px;border-radius:10px;color:#64748b;cursor:pointer;}
+.seg div.on{background:#fff;color:var(--blue);box-shadow:0 1px 4px rgba(16,23,42,.08);}
+.kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;}
+.kv:last-child{border:none;}.kv .k{color:var(--mut);}.kv .v{font-weight:600;}
+svg.lucide{width:18px;height:18px;stroke-width:2;vertical-align:middle;flex:none;}
+.notif{display:flex;gap:12px;padding:13px;background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;}
+.notif .ni{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none;}
+.notif .ni svg.lucide{width:17px;height:17px;}
+.ni-red{background:var(--red-l);color:var(--red);}.ni-amber{background:var(--amber-l);color:var(--amber);}.ni-blue{background:var(--blue-l);color:var(--blue);}
+</style></head>
+<body>
+<div class="title">MentorOS Admin — Mobile Dashboard</div>
+<div class="hint">For managers/admins. Tap module cards, Approvals, and Chat.</div>
+
+<div class="phone"><div class="screenwrap" id="wrap">
+
+  <!-- LOGIN -->
+  <div class="screen on" id="login" style="background:linear-gradient(160deg,#0850FF,#0A3AD0)">
+    <div class="sb" style="color:#fff"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:30px 26px;color:#fff">
+      <img src="assets/mentoros-logo.png" alt="MentorOS" style="height:32px;width:auto;align-self:flex-start;margin-bottom:10px">
+      <div style="font-size:14px;opacity:.85;margin-bottom:30px">Admin &amp; manager console</div>
+      <div style="background:#fff;border-radius:20px;padding:20px;color:var(--ink);box-shadow:0 20px 40px rgba(8,80,255,.3)">
+        <div style="font-size:18px;font-weight:800;margin-bottom:16px">Welcome back 👋</div>
+        <div class="sect" style="margin:0 2px 7px">Email</div><div class="li" style="cursor:default;margin-bottom:10px">admin@example.com</div>
+        <div class="sect" style="margin:0 2px 7px">Password</div><div class="li" style="cursor:default;margin-bottom:4px">••••••••</div>
+        <button class="btn btn-pri" style="margin-top:14px" onclick="go('hub')">Sign in</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HUB -->
+  <div class="screen" id="hub">
+    <div class="gh">
+      <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <img src="assets/mentoros-logo.png" alt="MentorOS" style="height:20px;width:auto;margin-bottom:12px;opacity:.97">
+      <div class="ghrow"><div><div class="h-greet">Welcome back,</div><div class="h-name">Admin</div></div><div class="bell" onclick="go('notifs')"><i data-lucide="bell"></i><span class="dot"></span></div></div>
+      <div style="font-size:12.5px;opacity:.85;margin-top:6px">Your organisation at a glance</div>
+    </div>
+    <div class="scroll"><div class="body">
+      <div class="card mod" onclick="go('m-part')">
+        <div class="modtop"><div class="modic"><i data-lucide="users"></i></div><div class="grow"><div class="modname">Participants &amp; Sites</div><div class="modsub">8 participants · 26 sites</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+        <div class="statusrow"><span class="sdot s-red"></span><span class="tred"><span class="sval">8</span> No Safety Plan</span></div>
+        <div class="statusrow"><span class="sdot s-amber"></span><span class="tamber"><span class="sval">8</span> No recent documentation</span></div>
+      </div>
+      <div class="card mod" onclick="go('m-rost')">
+        <div class="modtop"><div class="modic"><i data-lucide="calendar"></i></div><div class="grow"><div class="modname">Rostering &amp; Service</div><div class="modsub">Shifts, timesheets, reports</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+        <div class="statusrow"><span class="sdot s-red"></span><span class="tred"><span class="sval">0%</span> Roster coverage — below target</span></div>
+        <div class="statusrow"><span class="sdot s-amber"></span><span class="tamber"><span class="sval">0%</span> Report completion</span></div>
+      </div>
+      <div class="card mod" onclick="go('m-risk')">
+        <div class="modtop"><div class="modic" style="background:var(--red-l);color:var(--red)"><i data-lucide="triangle-alert"></i></div><div class="grow"><div class="modname">Risk &amp; Incidents</div><div class="modsub">Incidents &amp; compliance</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+        <div class="statusrow"><span class="sdot s-red"></span><span class="tred"><span class="sval">5</span> Open incidents — require attention</span></div>
+      </div>
+      <div class="card mod" onclick="go('m-fin')">
+        <div class="modtop"><div class="modic"><i data-lucide="dollar-sign"></i></div><div class="grow"><div class="modname">Finance &amp; Claims</div><div class="modsub">NDIS claiming &amp; invoicing</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+        <div class="statusrow"><span class="sdot s-green"></span><span class="tgreen">All plans healthy</span></div>
+      </div>
+      <div class="card mod" onclick="go('m-people')">
+        <div class="modtop"><div class="modic"><i data-lucide="contact"></i></div><div class="grow"><div class="modname">People &amp; Culture</div><div class="modsub">7 staff · 1 invite pending</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+        <div class="statusrow"><span class="sdot s-green"></span><span class="tgreen">All certifications current</span></div>
+      </div>
+    </div></div>
+    <div class="nav" id="nav-hub"></div>
+  </div>
+
+  <!-- MODULE: PARTICIPANTS -->
+  <div class="screen" id="m-part">
+    <div class="gh" style="padding-bottom:16px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="topbar" style="padding:0 0 8px;color:#fff"><span class="back" style="color:#fff" onclick="go('hub')"><i data-lucide="chevron-left"></i> Hub</span><div class="bell" style="width:34px;height:34px" onclick="go('notifs')"><i data-lucide="bell"></i></div></div>
+      <div class="h-name" style="font-size:20px">Participants &amp; Sites</div></div>
+    <div class="scroll"><div class="body">
+      <div class="statline"><div class="statbox"><div class="n">8</div><div class="l">participants</div></div><div class="statbox"><div class="n">26</div><div class="l">sites</div></div><div class="statbox"><div class="n">1</div><div class="l">onboarding</div></div></div>
+      <div class="attn"><div class="at"><i data-lucide="triangle-alert"></i> Needs attention</div><div style="font-size:12.5px;color:#7a4a09;margin-top:6px">8 participants have no Safety Plan · 8 with no recent shift report</div></div>
+      <div class="sect">Participants <a>View all</a></div>
+      <div class="li"><div class="pav">ET</div><div class="grow"><div class="pn">Emily Turner</div><div class="pm">NDIS •••• 0001 · 12 Maple Street</div></div><span class="stch st-red">No safety plan</span></div>
+      <div class="li"><div class="pav">JL</div><div class="grow"><div class="pn">Jacob Lee</div><div class="pm">NDIS •••• 0002 · 8 River Road</div></div><span class="stch st-green">Active</span></div>
+      <div class="li"><div class="pav">SA</div><div class="grow"><div class="pn">Sophie Adams</div><div class="pm">NDIS •••• 0003 · 30 Oak Avenue</div></div><span class="stch st-amber">No report 7d</span></div>
+      <div class="sect" style="margin-top:8px">Sites</div>
+      <div class="li"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">12 Maple Street (SIL)</div><div class="pm">3/4 capacity · 2 staff</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">8 River Road (SIL)</div><div class="pm">2/4 capacity · 1 staff</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+    </div></div>
+    <div class="nav" id="nav-part"></div>
+  </div>
+
+  <!-- MODULE: ROSTERING -->
+  <div class="screen" id="m-rost">
+    <div class="gh" style="padding-bottom:16px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="topbar" style="padding:0 0 8px;color:#fff"><span class="back" style="color:#fff" onclick="go('hub')"><i data-lucide="chevron-left"></i> Hub</span></div>
+      <div class="h-name" style="font-size:20px">Rostering &amp; Service</div></div>
+    <div class="scroll"><div class="body">
+      <div class="statline"><div class="statbox"><div class="n tred">0%</div><div class="l">roster coverage</div></div><div class="statbox"><div class="n tamber">0%</div><div class="l">report completion</div></div></div>
+      <div class="sect">Pending timesheet approvals <a onclick="go('approvals')">Review</a></div>
+      <div class="li" onclick="go('approvals')"><div class="pav">AC</div><div class="grow"><div class="pn">Alex Carter · 4h</div><div class="pm">12 Maple St · today 10:00–14:00</div></div><span class="stch st-amber">Pending</span></div>
+      <div class="li" onclick="go('approvals')"><div class="pav">JD</div><div class="grow"><div class="pn">Jordan Diaz · 6h</div><div class="pm">8 River Rd · today 8:00–14:00</div></div><span class="stch st-amber">Pending</span></div>
+      <div class="sect" style="margin-top:8px">This fortnight</div>
+      <div class="card"><div class="kv"><span class="k">Shifts scheduled</span><span class="v">0</span></div><div class="kv"><span class="k">Hours</span><span class="v">0h</span></div><div class="kv"><span class="k">Payroll export</span><span class="v tmut">Web only</span></div></div>
+      <button class="btn btn-soft" onclick="go('approvals')">Open approvals</button>
+    </div></div>
+    <div class="nav" id="nav-rost"></div>
+  </div>
+
+  <!-- MODULE: FINANCE -->
+  <div class="screen" id="m-fin">
+    <div class="gh" style="padding-bottom:16px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="topbar" style="padding:0 0 8px;color:#fff"><span class="back" style="color:#fff" onclick="go('hub')"><i data-lucide="chevron-left"></i> Hub</span></div>
+      <div class="h-name" style="font-size:20px">Finance &amp; Claims</div></div>
+    <div class="scroll"><div class="body">
+      <div class="statline"><div class="statbox"><div class="n">$0</div><div class="l">monthly revenue</div></div><div class="statbox"><div class="n">$0</div><div class="l">pending claims</div></div></div>
+      <div class="statline"><div class="statbox"><div class="n">$0</div><div class="l">outstanding</div></div><div class="statbox"><div class="n">0%</div><div class="l">claim success</div></div></div>
+      <div class="sect">Claims pipeline <a onclick="go('approvals')">Review</a></div>
+      <div class="card"><div class="statusrow"><span class="sdot s-green"></span>All plans healthy · no claims in pipeline</div></div>
+      <div class="sect" style="margin-top:8px">SIL claiming (22 sites)</div>
+      <div class="li"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">12 Maple Street</div><div class="pm">Roster of Care · 0/4 participants</div></div><span class="stch st-amber">Setup</span></div>
+      <div class="card" style="margin-top:4px;font-size:11.5px;color:var(--mut);display:flex;gap:8px;align-items:center"><i data-lucide="info" style="color:var(--blue)"></i> Building ROCs &amp; payroll export are done on the web app.</div>
+    </div></div>
+    <div class="nav" id="nav-fin"></div>
+  </div>
+
+  <!-- MODULE: PEOPLE -->
+  <div class="screen" id="m-people">
+    <div class="gh" style="padding-bottom:16px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="topbar" style="padding:0 0 8px;color:#fff"><span class="back" style="color:#fff" onclick="go('hub')"><i data-lucide="chevron-left"></i> Hub</span></div>
+      <div class="h-name" style="font-size:20px">People &amp; Culture</div></div>
+    <div class="scroll"><div class="body">
+      <div class="statline"><div class="statbox"><div class="n">7</div><div class="l">staff</div></div><div class="statbox"><div class="n">1</div><div class="l">pending invite</div></div><div class="statbox"><div class="n tgreen">100%</div><div class="l">compliant</div></div></div>
+      <div class="sect">Staff <a>View all</a></div>
+      <div class="li"><div class="pav">AC</div><div class="grow"><div class="pn">Alex Carter</div><div class="pm">Support Worker</div></div><span class="stch st-green">Active</span></div>
+      <div class="li"><div class="pav">MR</div><div class="grow"><div class="pn">Maria Reyes</div><div class="pm">Team Leader</div></div><span class="stch st-green">Active</span></div>
+      <div class="li"><div class="pav">SM</div><div class="grow"><div class="pn">Sam Mills</div><div class="pm">Support Worker</div></div><span class="stch st-amber">Cert due</span></div>
+      <div class="sect" style="margin-top:8px">Invitations</div>
+      <div class="li"><div class="pav"><i data-lucide="mail"></i></div><div class="grow"><div class="pn">new.worker@example.com</div><div class="pm">Support Worker · sent 16 Jun</div></div><span class="stch st-amber">Pending</span></div>
+      <button class="btn btn-soft" onclick="toast('Invite user')"><i data-lucide="user-plus" style="width:14px;height:14px;vertical-align:-2px"></i> Invite user</button>
+    </div></div>
+    <div class="nav" id="nav-people"></div>
+  </div>
+
+  <!-- MODULE: RISK -->
+  <div class="screen" id="m-risk">
+    <div class="gh" style="padding-bottom:16px;background:linear-gradient(155deg,#DC2626,#9f1d1d)"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="topbar" style="padding:0 0 8px;color:#fff"><span class="back" style="color:#fff" onclick="go('hub')"><i data-lucide="chevron-left"></i> Hub</span></div>
+      <div class="h-name" style="font-size:20px">Risk &amp; Incidents</div></div>
+    <div class="scroll"><div class="body">
+      <div class="statline"><div class="statbox"><div class="n tred">5</div><div class="l">open</div></div><div class="statbox"><div class="n">0</div><div class="l">high risk</div></div><div class="statbox"><div class="n">--</div><div class="l">avg resolution</div></div></div>
+      <div class="sect">Category breakdown</div>
+      <div class="card">
+        <div class="bar"><span class="bl">Participant behaviour</span><span class="bt"><span class="bf" style="width:100%"></span></span><span class="bn">3</span></div>
+        <div class="bar"><span class="bl">Participant medical</span><span class="bt"><span class="bf" style="width:100%"></span></span><span class="bn">3</span></div>
+        <div class="bar"><span class="bl">Safeguarding</span><span class="bt"><span class="bf" style="width:66%"></span></span><span class="bn">2</span></div>
+        <div class="bar"><span class="bl">Environment</span><span class="bt"><span class="bf" style="width:33%"></span></span><span class="bn">1</span></div>
+        <div class="bar"><span class="bl">WHS</span><span class="bt"><span class="bf" style="width:33%"></span></span><span class="bn">1</span></div>
+      </div>
+      <div class="sect">Open incidents <a onclick="go('approvals')">Review</a></div>
+      <div class="li"><div class="pav" style="background:var(--red-l);color:var(--red)"><i data-lucide="triangle-alert"></i></div><div class="grow"><div class="pn">Minor fall — Emily Turner</div><div class="pm">22 Jun · Medium · under review</div></div><span class="stch st-red">Open</span></div>
+      <div class="li"><div class="pav" style="background:var(--amber-l);color:var(--amber)"><i data-lucide="activity"></i></div><div class="grow"><div class="pn">Behaviour — Jacob Lee</div><div class="pm">21 Jun · Low · investigating</div></div><span class="stch st-amber">Open</span></div>
+    </div></div>
+    <div class="nav" id="nav-risk"></div>
+  </div>
+
+  <!-- APPROVALS -->
+  <div class="screen" id="approvals">
+    <div class="gh" style="padding-bottom:16px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+      <div class="topbar" style="padding:0 0 8px;color:#fff"><span class="back" style="color:#fff" onclick="go('hub')"><i data-lucide="chevron-left"></i> Hub</span></div>
+      <div class="h-name" style="font-size:20px">Approvals</div></div>
+    <div class="scroll"><div class="body">
+      <div class="seg"><div class="on" onclick="apTab(this,'ap-time')">Timesheets</div><div onclick="apTab(this,'ap-rep')">Reports</div><div onclick="apTab(this,'ap-claim')">Claims</div></div>
+      <div class="aptab" id="ap-time">
+        <div class="card"><div class="row" style="display:flex;align-items:center;gap:11px"><div class="pav">AC</div><div class="grow"><div class="pn">Alex Carter · 4h</div><div class="pm">12 Maple St · 10:00–14:00 · GPS verified</div></div></div>
+          <div style="display:flex;gap:9px;margin-top:12px"><button class="btn btn-sm btn-ok" onclick="toast('Approved ✓')"><i data-lucide="check" style="width:13px;height:13px;vertical-align:-2px"></i> Approve</button><button class="btn btn-sm btn-no" onclick="toast('Sent back')">Query</button></div></div>
+        <div class="card"><div class="row" style="display:flex;align-items:center;gap:11px"><div class="pav">JD</div><div class="grow"><div class="pn">Jordan Diaz · 6h</div><div class="pm">8 River Rd · 8:00–14:00 · GPS verified</div></div></div>
+          <div style="display:flex;gap:9px;margin-top:12px"><button class="btn btn-sm btn-ok" onclick="toast('Approved ✓')"><i data-lucide="check" style="width:13px;height:13px;vertical-align:-2px"></i> Approve</button><button class="btn btn-sm btn-no" onclick="toast('Sent back')">Query</button></div></div>
+      </div>
+      <div class="aptab" id="ap-rep" style="display:none">
+        <div class="card"><div class="pn">Shift report — Emily Turner</div><div class="pm">Alex Carter · today · flagged: possible incident</div><div style="display:flex;gap:9px;margin-top:12px"><button class="btn btn-sm btn-ok" onclick="toast('Acknowledged')">Acknowledge</button><button class="btn btn-sm btn-no" onclick="go('m-risk')">To incident</button></div></div>
+      </div>
+      <div class="aptab" id="ap-claim" style="display:none">
+        <div class="card" style="display:flex;gap:8px;align-items:center;color:var(--mut);font-size:12.5px"><i data-lucide="info" style="color:var(--blue)"></i> No claims pending. Claim batching is done on the web app.</div>
+      </div>
+    </div></div>
+    <div class="nav" id="nav-appr"></div>
+  </div>
+
+  <!-- CHAT LIST -->
+  <div class="screen" id="chat">
+    <div class="gh" style="padding-bottom:18px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div><div class="ghrow"><div class="h-name">Messages</div><div class="bell" style="width:36px;height:36px" onclick="toast('New message')"><i data-lucide="pencil"></i></div></div></div>
+    <div class="scroll"><div class="body">
+      <div class="seg"><div class="on" onclick="chTab(this,'ch-team')">Team</div><div onclick="chTab(this,'ch-sites')">Site boards</div></div>
+      <div class="chattab" id="ch-team">
+        <div class="chatrow" onclick="go('thread')"><div class="pav">MR</div><div class="grow"><div class="pn">Maria Reyes</div><div class="pm">Emily's GP appt moved to Thursday…</div></div><span class="unread">2</span></div>
+        <div class="chatrow"><div class="pav">SM</div><div class="grow"><div class="pn">Sam Mills</div><div class="pm">All calm overnight 👍</div></div><span class="pm">9:02</span></div>
+        <div class="chatrow"><div class="pav" style="background:var(--purple);color:#fff"><i data-lucide="users"></i></div><div class="grow"><div class="pn">Illawarra team</div><div class="pm">Alex: covered the afternoon shift</div></div><span class="unread">5</span></div>
+      </div>
+      <div class="chattab" id="ch-sites" style="display:none">
+        <div class="chatrow" onclick="go('thread')"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">12 Maple Street</div><div class="pm">Handover: morning meds in cabinet</div></div><span class="unread">1</span></div>
+        <div class="chatrow"><div class="pav"><i data-lucide="home"></i></div><div class="grow"><div class="pn">8 River Road</div><div class="pm">To-do: order supplies</div></div><span class="pm">Tue</span></div>
+      </div>
+    </div></div>
+    <div class="nav" id="nav-chat"></div>
+  </div>
+
+  <!-- CHAT THREAD -->
+  <div class="screen" id="thread">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div class="topbar"><span class="back" onclick="go('chat')"><i data-lucide="chevron-left"></i> Back</span><div style="text-align:center"><div class="ttl" style="font-size:15px">Maria Reyes</div><div class="pm">Team Leader · online</div></div><i data-lucide="phone" style="color:var(--blue)"></i></div>
+    <div class="scroll"><div class="body" style="display:flex;flex-direction:column">
+      <div class="bubble b-them">Hi — Emily's GP appointment moved to Thursday 2pm. Can someone cover the transport?</div>
+      <div class="bmeta">Maria · 8:40</div>
+      <div class="bubble b-me">I'll assign Alex, he's on shift that day.</div>
+      <div class="bmeta me">You · 8:42</div>
+      <div class="bubble b-them">Perfect, thanks 🙏 I'll note it on the site board too.</div>
+      <div class="bmeta">Maria · 8:43</div>
+      <div class="bubble b-me">Done — added to 12 Maple Street handover.</div>
+      <div class="bmeta me">You · 8:45</div>
+    </div></div>
+    <div class="chatinput"><div class="f">Message…</div><div class="send" onclick="toast('Sent')"><i data-lucide="send"></i></div></div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div class="screen" id="notifs">
+    <div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>
+    <div class="topbar"><span class="back" onclick="go('hub')"><i data-lucide="chevron-left"></i> Hub</span><div class="ttl">Notifications</div><span style="width:30px"></span></div>
+    <div class="scroll"><div class="body">
+      <div class="notif"><div class="ni ni-red"><i data-lucide="triangle-alert"></i></div><div class="grow"><div class="pn">New incident reported</div><div class="pm">Minor fall — Emily Turner · needs review</div><div class="pm" style="color:var(--blue);margin-top:4px" onclick="go('m-risk')">Review →</div></div></div>
+      <div class="notif"><div class="ni ni-amber"><i data-lucide="clock"></i></div><div class="grow"><div class="pn">2 timesheets pending</div><div class="pm">Approve before payroll cut-off</div><div class="pm" style="color:var(--blue);margin-top:4px" onclick="go('approvals')">Approve →</div></div></div>
+      <div class="notif"><div class="ni ni-amber"><i data-lucide="graduation-cap"></i></div><div class="grow"><div class="pn">Certification due soon</div><div class="pm">Sam Mills · Manual Handling expires 18 Jul</div></div></div>
+      <div class="notif"><div class="ni ni-blue"><i data-lucide="message-square"></i></div><div class="grow"><div class="pn">New message from Maria</div><div class="pm">Emily's GP appt moved to Thursday</div></div></div>
+    </div></div>
+    <div class="nav" id="nav-notif"></div>
+  </div>
+
+  <!-- MORE -->
+  <div class="screen" id="more">
+    <div class="gh" style="padding-bottom:18px"><div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div><div class="ghrow"><div class="row" style="display:flex;align-items:center;gap:12px"><div class="av">AD</div><div><div class="h-name" style="font-size:18px">Admin</div><div class="h-greet">Administrator · AMS</div></div></div></div></div>
+    <div class="scroll"><div class="body">
+      <div class="sect">All modules</div>
+      <div class="li" onclick="go('m-part')"><div class="pav"><i data-lucide="users"></i></div><div class="grow"><div class="pn">Participants &amp; Sites</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="go('m-rost')"><div class="pav"><i data-lucide="calendar"></i></div><div class="grow"><div class="pn">Rostering &amp; Service</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="go('m-fin')"><div class="pav"><i data-lucide="dollar-sign"></i></div><div class="grow"><div class="pn">Finance &amp; Claims</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="go('m-people')"><div class="pav"><i data-lucide="contact"></i></div><div class="grow"><div class="pn">People &amp; Culture</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" onclick="go('m-risk')"><div class="pav"><i data-lucide="triangle-alert"></i></div><div class="grow"><div class="pn">Risk &amp; Incidents</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="sect" style="margin-top:8px">Account</div>
+      <div class="li"><div class="pav"><i data-lucide="settings"></i></div><div class="grow"><div class="pn">Settings</div></div><span class="chev"><i data-lucide="chevron-right"></i></span></div>
+      <div class="li" style="color:var(--red)" onclick="toast('Signed out')"><div class="pav" style="background:var(--red-l);color:var(--red)"><i data-lucide="log-out"></i></div><div class="grow"><div class="pn" style="color:var(--red)">Sign out</div></div></div>
+    </div></div>
+    <div class="nav" id="nav-more"></div>
+  </div>
+
+  <div class="toast" id="toast" style="position:absolute;bottom:90px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;font-size:12px;padding:10px 16px;border-radius:30px;opacity:0;transition:.3s;pointer-events:none;z-index:9;"></div>
+</div></div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+const tabs=[['hub','layout-dashboard','Hub'],['approvals','check-check','Approvals'],['chat','message-square','Chat'],['more','ellipsis','More']];
+function navHTML(active){return tabs.map(t=>`<div class="${t[0]===active?'on':''}" onclick="go('${t[0]}')"><span class="i"><i data-lucide="${t[1]}"></i></span>${t[2]}</div>`).join('');}
+['hub','part','rost','fin','people','risk','appr','chat','notif','more'].forEach(n=>{const map={hub:'hub',part:'hub',rost:'hub',fin:'hub',people:'hub',risk:'hub',appr:'approvals',chat:'chat',notif:'hub',more:'more'};const e=document.getElementById('nav-'+n);if(e)e.innerHTML=navHTML(map[n]);});
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelector('#'+id+' .scroll')?.scrollTo(0,0);if(window.lucide)lucide.createIcons();try{if(window.self!==window.top)parent.postMessage({mentorScreen:id},'*');}catch(e){}}
+function apTab(el,id){[...el.parentElement.children].forEach(c=>c.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.aptab').forEach(t=>t.style.display='none');document.getElementById(id).style.display='block';}
+function chTab(el,id){[...el.parentElement.children].forEach(c=>c.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.chattab').forEach(t=>t.style.display='none');document.getElementById(id).style.display='block';}
+let toastT;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.opacity=1;clearTimeout(toastT);toastT=setTimeout(()=>t.style.opacity=0,1400);}
+if(window.self!==window.top){document.body.classList.add('embed');try{parent.postMessage({mentorScreen:'login'},'*');}catch(e){}}
+if(window.lucide)lucide.createIcons();
+</script>
+</body></html>

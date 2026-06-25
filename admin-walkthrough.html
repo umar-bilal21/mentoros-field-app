@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MentorOS Admin Console — Guided Walkthrough</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--blue:#0850FF;--blue-d:#0A3AD0;--ink:#0F172A;--mut:#64748B;--line:#E6E9F0;--bg:#EEF2F8;--green:#16A34A;--purple:#7A3FF0;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
+body{background:var(--bg);color:var(--ink);min-height:100vh;}
+.top{background:linear-gradient(120deg,#0850FF,#0A3AD0);color:#fff;padding:20px 34px;display:flex;align-items:center;gap:11px;}
+.top .t{font-size:19px;font-weight:800;letter-spacing:-.01em;}
+.top .s{font-size:12.5px;opacity:.85;margin-left:auto;max-width:420px;text-align:right;}
+.stage{display:flex;gap:40px;align-items:flex-start;justify-content:center;padding:34px 34px 60px;flex-wrap:wrap;}
+.left{flex:0 0 auto;position:sticky;top:24px;}
+.phoneframe{width:360px;height:760px;background:#0b1020;border-radius:46px;padding:13px;box-shadow:0 30px 70px rgba(15,23,42,.35);}
+.phoneframe iframe{width:100%;height:100%;border:none;border-radius:34px;background:#F5F7FB;}
+.right{flex:1;max-width:560px;min-width:340px;}
+.crumb{font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;}
+.h{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px;}
+.sub{font-size:15px;color:var(--mut);line-height:1.6;margin-bottom:24px;}
+.block{border-radius:16px;padding:18px 20px;margin-bottom:16px;border:1px solid var(--line);background:#fff;}
+.block .lbl{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px;}
+.tagdot{width:10px;height:10px;border-radius:50%;}
+.block ul{margin:0;padding-left:18px;}
+.block li{font-size:13.5px;color:#374151;line-height:1.65;margin-bottom:5px;}
+.b-happening .lbl{color:var(--ink);} .b-happening{background:#fff;}
+.b-mentoros{background:#F0FAF4;border-color:#cdeeda;} .b-mentoros .lbl{color:#0a7d44;}
+.b-suggest{background:#F4F1FF;border-color:#ddd2fb;} .b-suggest .lbl{color:var(--purple);}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;font-weight:600;color:#475569;margin-bottom:22px;}
+.legend span{display:inline-flex;align-items:center;gap:7px;}
+.progress{font-size:12px;color:var(--mut);margin-top:18px;}
+@media(max-width:820px){.left{position:static}}
+@media(max-width:640px){
+  .top{padding:14px 18px;gap:9px;}
+  .top .t{font-size:15px;line-height:1.2;}
+  .top .s{display:none;}
+  .top img{height:22px;}
+  .stage{padding:20px 14px 50px;gap:24px;}
+  .phoneframe{width:100%;max-width:340px;height:auto;aspect-ratio:360/760;}
+  .left{flex:0 0 100%;display:flex;justify-content:center;}
+  .right{flex:1 1 100%;min-width:0;width:100%;}
+  .h{font-size:24px;}
+}
+</style></head>
+<body>
+  <div class="top">
+    <a href="index.html" style="color:#fff;text-decoration:none;font-size:13px;font-weight:600;opacity:.85;white-space:nowrap">‹ Apps</a>
+    <img src="assets/mentoros-logo.png" alt="MentorOS" style="height:26px">
+    <div class="t">Admin Console — Guided Walkthrough</div>
+    <div class="s">Tap through the console on the left → the panel on the right explains each screen.</div>
+  </div>
+
+  <div class="stage">
+    <div class="left">
+      <div class="phoneframe"><iframe id="app" src="admin-dashboard.html?v=1"></iframe></div>
+    </div>
+
+    <div class="right">
+      <div class="legend">
+        <span><span class="tagdot" style="background:var(--green)"></span> From MentorOS (already exists)</span>
+        <span><span class="tagdot" style="background:var(--purple)"></span> What we're suggesting (new)</span>
+      </div>
+      <div class="crumb" id="crumb">Screen</div>
+      <div class="h" id="title">Welcome</div>
+      <div class="sub" id="sub">Tap “Sign in” inside the phone to begin the tour.</div>
+
+      <div class="block b-happening">
+        <div class="lbl">📍 What's happening here</div>
+        <ul id="happening"><li>—</li></ul>
+      </div>
+      <div class="block b-mentoros">
+        <div class="lbl"><span class="tagdot" style="background:var(--green)"></span> From MentorOS (existing function)</div>
+        <ul id="mentoros"><li>—</li></ul>
+      </div>
+      <div class="block b-suggest">
+        <div class="lbl"><span class="tagdot" style="background:var(--purple)"></span> What we're suggesting (new)</div>
+        <ul id="suggest"><li>—</li></ul>
+      </div>
+      <div class="progress" id="prog"></div>
+    </div>
+  </div>
+
+<script>
+const li = arr => arr.map(x=>`<li>${x}</li>`).join('');
+const D = {
+  login:{crumb:'Entry',title:'Admin sign in',sub:'A manager or admin signs into the mobile console.',
+    happening:['An administrator signs into the mobile console.'],
+    mentoros:['Same MentorOS accounts & roles — admins, team leaders and coordinators already live in People & Culture.'],
+    suggest:['A focused mobile console so managers can act on the go — not the full web dashboard squeezed onto a phone.']},
+  hub:{crumb:'Home',title:'Hub',sub:'The whole organisation at a glance.',
+    happening:['Five module cards show what needs attention, what needs review and what’s happening. Tap any card to open it.'],
+    mentoros:['This mirrors the MentorOS web Hub exactly — the same five modules and the same status signals (Needs Attention / Review / Happening).'],
+    suggest:['A mobile-first hub that surfaces the red/amber alerts first, so a manager instantly sees problems (8 missing safety plans, 5 open incidents).']},
+  'm-part':{crumb:'Module',title:'Participants & Sites',sub:'Who you support, and where.',
+    happening:['Counts of participants, sites and onboarding, what needs attention, and the participant & site lists.'],
+    mentoros:['From MentorOS Participants & Sites — 8 participants, 26 SIL sites, full profiles and onboarding.'],
+    suggest:['A quick mobile read of who’s missing a safety plan or a recent report. The full 12-step onboarding stays on the web.']},
+  'm-rost':{crumb:'Module',title:'Rostering & Service',sub:'Shifts, timesheets, coverage.',
+    happening:['Roster coverage & report completion, plus the timesheets waiting for approval.'],
+    mentoros:['From MentorOS Rostering & Service — roster, timesheets, payroll export.'],
+    suggest:['Approve timesheets from the phone before the payroll cut-off. Roster building & payroll export stay on the web.']},
+  'm-fin':{crumb:'Module',title:'Finance & Claims',sub:'NDIS claiming & money.',
+    happening:['Revenue, pending claims, outstanding and claim-success at a glance, plus SIL claiming status.'],
+    mentoros:['From MentorOS Finance & Claims — claiming pipeline, ROC builder, funding burn.'],
+    suggest:['A read-only health check on the phone. Heavy claim batching & ROC building stay on the web.']},
+  'm-people':{crumb:'Module',title:'People & Culture',sub:'Your staff & compliance.',
+    happening:['Staff count, pending invitations and compliance status, with the staff list.'],
+    mentoros:['From MentorOS People & Culture — staff directory, invitations, certifications.'],
+    suggest:['Spot expiring certifications and invite staff on the go.']},
+  'm-risk':{crumb:'Module',title:'Risk & Incidents',sub:'Incidents & compliance.',
+    happening:['Open / high-risk counts, a category-breakdown chart, and the list of open incidents to review.'],
+    mentoros:['From MentorOS Risk & Incidents — incident analytics, the 7-step wizard, exports.'],
+    suggest:['Managers see and triage incidents the moment a worker reports one from the field app.']},
+  approvals:{crumb:'Action',title:'Approvals',sub:'A manager’s most-used mobile task.',
+    happening:['Approve or query timesheets, acknowledge flagged shift reports, and review claims — all in tabs.'],
+    mentoros:['Approvals already exist across MentorOS (timesheet approval, report review, claim approval).'],
+    suggest:['Brought together into one fast mobile queue with one-tap Approve — the thing managers do between meetings.']},
+  chat:{crumb:'Communication',title:'Messages',sub:'Stay connected with the team & sites.',
+    happening:['Team conversations and per-site message boards, each with unread counts.'],
+    mentoros:['From MentorOS — every site already has a Message Board & Live Chat.'],
+    suggest:['A proper mobile chat so handover and coordination happen instantly, wherever the manager is.']},
+  thread:{crumb:'Communication',title:'Conversation',sub:'A real chat thread.',
+    happening:['Messages back and forth with a team member, with a box to reply.'],
+    mentoros:['Built on MentorOS site chat / messaging.'],
+    suggest:['Familiar chat-style UX with site-handover links, designed for care teams.']},
+  notifs:{crumb:'Alerts',title:'Notifications',sub:'What needs you, now.',
+    happening:['New incidents, pending timesheets, expiring certifications and new messages — each with a quick action.'],
+    mentoros:['Driven by real MentorOS events across every module.'],
+    suggest:['Push notifications so a manager never misses an incident or an approval cut-off.']},
+  more:{crumb:'Menu',title:'More',sub:'Everything else.',
+    happening:['Jump to any module, open settings, or sign out.'],
+    mentoros:['Access to all five MentorOS modules.'],
+    suggest:['A tidy mobile menu; the heavy admin work (onboarding, payroll, ROC) is signposted to the web.']},
+};
+function render(id){const d=D[id];if(!d)return;document.getElementById('crumb').textContent=d.crumb;document.getElementById('title').textContent=d.title;document.getElementById('sub').textContent=d.sub;document.getElementById('happening').innerHTML=li(d.happening);document.getElementById('mentoros').innerHTML=li(d.mentoros);document.getElementById('suggest').innerHTML=li(d.suggest);
+  const keys=Object.keys(D);document.getElementById('prog').textContent='Screen: '+d.title+'  ·  '+(keys.indexOf(id)+1)+' of '+keys.length+' explained';}
+window.addEventListener('message',e=>{if(e.data&&e.data.mentorScreen)render(e.data.mentorScreen);});
+</script>
+</body></html>
